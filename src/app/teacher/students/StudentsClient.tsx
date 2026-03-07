@@ -220,28 +220,6 @@ export default function StudentsClient({
                   </div>
                 </div>
 
-                {isActive && (
-                  <div className="mt-4">
-                    {submitError && <div className="alert alert-danger">{submitError}</div>}
-                    <button
-                      className="btn btn-success"
-                      onClick={handleSubmit}
-                      disabled={submitting || votes.filter((v) => !v.removed).length === 0}
-                    >
-                      {submitting ? (
-                        <>
-                          <span className="spinner-border spinner-border-sm me-2" />
-                          Se trimite...
-                        </>
-                      ) : (
-                        'Trimite voturile elevilor'
-                      )}
-                    </button>
-                    <p className="text-muted small mt-2">
-                      Apasă acest buton când toți elevii tăi au votat.
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -316,6 +294,29 @@ export default function StudentsClient({
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {isActive && (
+            <div className="mt-4 pt-3 border-top">
+              {submitError && <div className="alert alert-danger">{submitError}</div>}
+              <button
+                className="btn btn-success"
+                onClick={handleSubmit}
+                disabled={submitting || votes.filter((v) => !v.removed).length === 0}
+              >
+                {submitting ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" />
+                    Se trimite...
+                  </>
+                ) : (
+                  'Trimite voturile elevilor'
+                )}
+              </button>
+              <p className="text-muted small mt-2">
+                Apasă acest buton când toți elevii tăi au votat.
+              </p>
             </div>
           )}
         </div>

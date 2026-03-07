@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { CSSProperties, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   DndContext,
@@ -27,6 +27,12 @@ export interface VideoItem {
   thumbnailUrl: string;
 }
 
+interface ButtonMove {
+  movedId: string;
+  displacedId: string;
+  direction: 'up' | 'down';
+}
+
 interface Props {
   rankedVideos: VideoItem[];
   unrankedVideos: VideoItem[];
@@ -45,7 +51,7 @@ function SortableCard({
   isFirst,
   isLast,
   isInTop10,
-  isDraggingAny,
+  buttonMove,
 }: {
   video: VideoItem;
   rank: number;
@@ -54,38 +60,58 @@ function SortableCard({
   isFirst: boolean;
   isLast: boolean;
   isInTop10: boolean;
-  isDraggingAny: boolean;
+  buttonMove: ButtonMove | null;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: video.id,
   });
 
-  const style = {
+  // Compute button-press animation — applied via CSS keyframes so it doesn't
+  // conflict with dnd-kit's own transition.
+  let animStyle: CSSProperties = {};
+  if (buttonMove) {
+    if (buttonMove.movedId === video.id) {
+      animStyle.animation =
+        buttonMove.direction === 'up'
+          ? 'slideFromBelow 0.22s ease'
+          : 'slideFromAbove 0.22s ease';
+    } else if (buttonMove.displacedId === video.id) {
+      animStyle.animation =
+        buttonMove.direction === 'up'
+          ? 'slideFromAbove 0.22s ease'
+          : 'slideFromBelow 0.22s ease';
+    }
+  }
+
+  // Use dnd-kit's transition directly — overriding it is what causes the
+  // "jerk on the topmost item" bug.
+  const style: CSSProperties = {
     transform: CSS.Transform.toString(transform),
-    transition: isDraggingAny ? transition : 'transform 0.2s ease',
+    transition,
     opacity: isDragging ? 0.4 : 1,
     zIndex: isDragging ? 50 : 'auto',
+    ...animStyle,
   };
 
   return (
     <div ref={setNodeRef} style={style} className="mb-2">
       <div
-        className={`card vote-card ${isDragging ? 'shadow-lg' : ''} ${isInTop10 ? 'border-primary' : 'border-0 bg-light'}`}
+        className={`card vote-card overflow-hidden ${isDragging ? 'shadow-lg' : ''} ${isInTop10 ? 'border-primary' : 'border-0 bg-light'}`}
       >
-        <div className="card-body py-2 px-3 d-flex align-items-center gap-3">
-          <span
-            className={`badge ${isInTop10 ? 'bg-primary' : 'bg-secondary'} rank-badge`}
-            style={{ fontSize: '0.85rem' }}
-          >
-            {rank}
-          </span>
-
+        <div className="card-body p-0 d-flex align-items-stretch">
+          {/* Drag handle — covers rank + thumbnail + title */}
           <div
             {...attributes}
             {...listeners}
-            className="d-flex align-items-center gap-2 flex-grow-1"
+            className="d-flex align-items-center gap-2 flex-grow-1 px-3 py-2"
             style={{ cursor: isDragging ? 'grabbing' : 'grab', minWidth: 0 }}
           >
+            <span
+              className={`badge flex-shrink-0 ${isInTop10 ? 'bg-primary' : 'bg-secondary'}`}
+              style={{ minWidth: '1.6rem', textAlign: 'center', fontSize: '0.85rem' }}
+            >
+              {rank}
+            </span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={video.thumbnailUrl}
@@ -94,25 +120,26 @@ function SortableCard({
               height={34}
               style={{ objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}
             />
-            <span className="text-truncate small fw-medium">{video.title}</span>
+            <span className="small fw-medium" style={{ wordBreak: 'break-word' }}>
+              {video.title}
+            </span>
           </div>
 
-          <div className="d-flex flex-column gap-1 ms-auto">
+          {/* Full-height side-by-side move buttons */}
+          <div className="d-flex border-start flex-shrink-0">
             <button
-              className="btn btn-outline-secondary btn-sm py-0 px-1 lh-1"
+              className="btn btn-outline-secondary border-0 border-end rounded-0 px-3"
               onClick={onMoveUp}
               disabled={isFirst}
               title="Mută sus"
-              style={{ fontSize: '0.7rem' }}
             >
               ▲
             </button>
             <button
-              className="btn btn-outline-secondary btn-sm py-0 px-1 lh-1"
+              className="btn btn-outline-secondary border-0 rounded-0 px-3"
               onClick={onMoveDown}
               disabled={isLast}
               title="Mută jos"
-              style={{ fontSize: '0.7rem' }}
             >
               ▼
             </button>
@@ -133,25 +160,23 @@ export default function VotingInterface({
   onCastSuccess,
 }: Props) {
   const router = useRouter();
-  const [ranked, setRanked] = useState<VideoItem[]>(initialRanked);
-  const [unranked] = useState<VideoItem[]>(initialUnranked);
-  const [isDraggingAny, setIsDraggingAny] = useState(false);
+  const [allVideos, setAllVideos] = useState<VideoItem[]>([...initialRanked, ...initialUnranked]);
+  const [, setIsDraggingAny] = useState(false);
   const [saving, setSaving] = useState(false);
   const [casting, setCasting] = useState(false);
   const [castError, setCastError] = useState('');
   const [castDone, setCastDone] = useState(false);
+  const [buttonMove, setButtonMove] = useState<ButtonMove | null>(null);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const moveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  // All videos in order: ranked first, then unranked
-  const allVideos = [...ranked, ...unranked];
-
   const scheduleSave = useCallback(
-    (newRanked: VideoItem[]) => {
+    (videos: VideoItem[]) => {
       if (!saveUrl) return;
       if (saveTimer.current) clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(async () => {
@@ -160,7 +185,7 @@ export default function VotingInterface({
           await fetch(saveUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ranking: newRanked.slice(0, 10).map((v) => v.id) }),
+            body: JSON.stringify({ ranking: videos.slice(0, 10).map((v) => v.id) }),
           });
         } finally {
           setSaving(false);
@@ -182,30 +207,31 @@ export default function VotingInterface({
     const oldIndex = allVideos.findIndex((v) => v.id === active.id);
     const newIndex = allVideos.findIndex((v) => v.id === over.id);
     const newAll = arrayMove(allVideos, oldIndex, newIndex);
-    const newRanked = newAll.slice(0, ranked.length > 0 ? Math.max(ranked.length, 10) : 10);
-
-    setRanked(newRanked.slice(0, 10));
-    scheduleSave(newRanked.slice(0, 10));
+    setAllVideos(newAll);
+    scheduleSave(newAll);
   }
 
   function moveItem(fromIndex: number, direction: 'up' | 'down') {
     const toIndex = direction === 'up' ? fromIndex - 1 : fromIndex + 1;
     if (toIndex < 0 || toIndex >= allVideos.length) return;
+
+    const movedId = allVideos[fromIndex].id;
+    const displacedId = allVideos[toIndex].id;
     const newAll = arrayMove(allVideos, fromIndex, toIndex);
-    const newRanked = newAll.slice(0, 10);
-    setRanked(newRanked);
-    scheduleSave(newRanked);
+
+    if (moveTimer.current) clearTimeout(moveTimer.current);
+    setButtonMove({ movedId, displacedId, direction });
+    moveTimer.current = setTimeout(() => setButtonMove(null), 300);
+
+    setAllVideos(newAll);
+    scheduleSave(newAll);
   }
 
   async function handleCast() {
-    if (ranked.length < 10) {
-      setCastError('Clasamentul trebuie să conțină exact 10 videoclipuri.');
-      return;
-    }
     setCasting(true);
     setCastError('');
     try {
-      const body: Record<string, unknown> = { ranking: ranked.slice(0, 10).map((v) => v.id) };
+      const body: Record<string, unknown> = { ranking: allVideos.slice(0, 10).map((v) => v.id) };
       if (studentData) {
         body.studentName = studentData.studentName;
         body.studentClass = studentData.studentClass;
@@ -245,18 +271,55 @@ export default function VotingInterface({
     );
   }
 
-  const top10 = allVideos.slice(0, 10);
-  const rest = allVideos.slice(10);
+  if (allVideos.length === 0) {
+    return <div className="alert alert-info">Nu există videoclipuri disponibile.</div>;
+  }
+
+  // Build the flat list, injecting the section divider between index 9 and 10
+  const items = allVideos.flatMap((video, index) => {
+    const card = (
+      <SortableCard
+        key={video.id}
+        video={video}
+        rank={index + 1}
+        onMoveUp={() => moveItem(index, 'up')}
+        onMoveDown={() => moveItem(index, 'down')}
+        isFirst={index === 0}
+        isLast={index === allVideos.length - 1}
+        isInTop10={index < 10}
+        buttonMove={buttonMove}
+      />
+    );
+    if (index === 10) {
+      return [
+        <div key="rest-divider" className="mt-3 mb-2">
+          <p className="text-muted small fw-semibold text-uppercase mb-0">
+            Restul videoclipurilor
+          </p>
+        </div>,
+        card,
+      ];
+    }
+    return [card];
+  });
 
   return (
     <div>
       {castError && <div className="alert alert-danger">{castError}</div>}
-      {saving && (
-        <div className="text-muted small mb-2">
-          <span className="spinner-border spinner-border-sm me-1" />
-          Se salvează...
-        </div>
-      )}
+
+      {/* Section label with inline save indicator — reserved space prevents layout shift */}
+      <div className="d-flex align-items-center gap-2 mb-2">
+        <p className="text-muted small fw-semibold text-uppercase mb-0">Top 10</p>
+        <span
+          className="spinner-border spinner-border-sm text-muted"
+          style={{
+            opacity: saving ? 1 : 0,
+            transition: 'opacity 0.15s',
+            width: '0.8rem',
+            height: '0.8rem',
+          }}
+        />
+      </div>
 
       <DndContext
         sensors={sensors}
@@ -265,59 +328,13 @@ export default function VotingInterface({
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={allVideos.map((v) => v.id)} strategy={verticalListSortingStrategy}>
-          {top10.length > 0 && (
-            <div className="mb-2">
-              <p className="text-muted small fw-semibold text-uppercase mb-1">Top 10</p>
-              {top10.map((video, index) => (
-                <SortableCard
-                  key={video.id}
-                  video={video}
-                  rank={index + 1}
-                  onMoveUp={() => moveItem(index, 'up')}
-                  onMoveDown={() => moveItem(index, 'down')}
-                  isFirst={index === 0}
-                  isLast={index === allVideos.length - 1}
-                  isInTop10={true}
-                  isDraggingAny={isDraggingAny}
-                />
-              ))}
-            </div>
-          )}
-
-          {rest.length > 0 && (
-            <div className="mt-3">
-              <p className="text-muted small fw-semibold text-uppercase mb-1">
-                Restul videoclipurilor
-              </p>
-              {rest.map((video, index) => (
-                <SortableCard
-                  key={video.id}
-                  video={video}
-                  rank={10 + index + 1}
-                  onMoveUp={() => moveItem(10 + index, 'up')}
-                  onMoveDown={() => moveItem(10 + index, 'down')}
-                  isFirst={10 + index === 0}
-                  isLast={10 + index === allVideos.length - 1}
-                  isInTop10={false}
-                  isDraggingAny={isDraggingAny}
-                />
-              ))}
-            </div>
-          )}
-
-          {allVideos.length === 0 && (
-            <div className="alert alert-info">Nu există videoclipuri disponibile.</div>
-          )}
+          {items}
         </SortableContext>
       </DndContext>
 
       {allVideos.length >= 10 && (
         <div className="mt-4">
-          <button
-            className="btn btn-success btn-lg"
-            onClick={handleCast}
-            disabled={casting || ranked.length < 10}
-          >
+          <button className="btn btn-success btn-lg" onClick={handleCast} disabled={casting}>
             {casting ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" />

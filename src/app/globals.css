@@ -16,13 +16,7 @@ body {
 }
 
 .vote-card {
-  cursor: grab;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
   user-select: none;
-}
-
-.vote-card:active {
-  cursor: grabbing;
 }
 
 .vote-card.is-dragging {
@@ -30,8 +24,12 @@ body {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-.rank-badge {
-  min-width: 2rem;
-  text-align: center;
-  font-weight: bold;
+@keyframes slideFromBelow {
+  from { transform: translateY(64px); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes slideFromAbove {
+  from { transform: translateY(-64px); }
+  to   { transform: translateY(0); }
 }
