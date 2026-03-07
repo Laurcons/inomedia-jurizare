@@ -1,0 +1,57 @@
+@startuml
+
+/':Profesor Coordonator: as Prof'/
+/':Elev: as Elev'/
+
+/'package "Jurizare Simpla" {'/
+/'    Prof --> (Creeaza cont)'/
+/'}'/
+
+actor "Elev" as Elev
+actor "Profesor Coordonator" as Prof
+participant Platforma as Plat
+actor "Admin" as Admin
+
+group Inscriere pentru Jurizare
+    Prof -> Plat: Inregistrare cu email si cod de verificare
+    note over Prof, Plat
+    Se introduc:
+    - scoala coordonata, dintr-o lista
+    - numele profesorului coordonator
+    end note
+end
+
+Admin -> Plat: Dezactiveaza alte inscrieri
+
+group Jurizare Simpla
+    Prof -> Plat: Autentificare in platforma
+    Prof -> Plat: Compilare si trimitere clasament, top 10
+end
+
+group Jurizare cu Elevi
+    Prof -> Plat: Autentificare in platforma
+    note over Prof, Plat #fa0: Inainte de perioada de jurizare:
+    Prof -> Plat: Selecteaza optiunea de jurizare cu elevi
+    Plat -> Prof: Cod de jurizare, unic pe scoala
+    note across #fa0: In timpul jurizarii:
+    Prof -> Elev: Cod de jurizare
+    Elev -> Plat: Compilare si trimitere clasament, top 10
+    note over Elev, Plat
+    Elevul este rugat sa introduca urmatoarele date:
+    - numele lui
+    - clasa
+    end note
+    note over Prof, Plat #fa0: Dupa perioada de jurizare:
+    note over Prof, Plat
+    Profesorul este rugat sa verifice voturile elevilor.
+    Ar trebui sa identifice voturi frauduloase, nume de elevi
+    sau clase invalide. Ele ar trebui sterse.
+    end note
+    Prof -> Plat: Centralizare si trimitere rezultate finale
+end
+
+note over Admin, Plat: Compilarea rezultatelor
+Plat -> Admin: Clasament final
+
+
+@enduml
