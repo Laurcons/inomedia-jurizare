@@ -1,6 +1,8 @@
 import { connectDB } from '@/lib/mongodb';
 import Video from '@/models/Video';
 
+export const dynamic = 'force-dynamic';
+
 export default async function VideosPage() {
   await connectDB();
   const videos = await Video.find().lean();

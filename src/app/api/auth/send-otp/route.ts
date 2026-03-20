@@ -1,5 +1,5 @@
-import { connectDB } from '@/lib/mongodb';
 import { sendOtpEmail } from '@/lib/mailer';
+import { connectDB } from '@/lib/mongodb';
 import Admin from '@/models/Admin';
 import Teacher from '@/models/Teacher';
 import { NextRequest, NextResponse } from 'next/server';
