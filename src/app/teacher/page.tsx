@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
 import Teacher from '@/models/Teacher';
 import VotingState from '@/models/VotingState';
+import { redirect } from 'next/navigation';
 
 export default async function TeacherPage() {
   const session = await getSession();
@@ -24,9 +24,7 @@ export default async function TeacherPage() {
           <div className="card shadow-sm">
             <div className="card-body p-5">
               <h2 className="h4 mb-3">Perioada de jurizare nu a început</h2>
-              <p className="text-muted">
-                Revino mai târziu când organizatorii vor deschide procesul de votare.
-              </p>
+              <p className="text-muted">Revino mai târziu când organizatorii vor deschide procesul de votare.</p>
             </div>
           </div>
         </div>

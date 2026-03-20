@@ -1,9 +1,11 @@
 # Plan: Inomedia Voting Platform
 
 ## Context
+
 Building a greenfield Next.js web application for a Romanian school video-ranking competition. The platform handles three actor types (Teacher, Admin, Student), two voting flows (simple and student-delegated), and a Borda-count aggregation system. The project directory currently has only spec files — no code exists yet.
 
 ## Tech Stack Decisions
+
 - **Framework**: Next.js 16 App Router, TypeScript
 - **Session**: `iron-session` v8 (stateless encrypted cookies, App Router native)
 - **Database**: MongoDB via `mongoose` (singleton connection pattern)
@@ -78,6 +80,7 @@ src/
 ## Database Models
 
 ### `Teacher`
+
 ```
 email, fullName, school, locality, county
 studentCount: "1" | "2" | "3" | "4+"
@@ -90,17 +93,20 @@ otp: string, otpExpiry: Date
 ```
 
 ### `Admin`
+
 ```
 email, name
 otp: string, otpExpiry: Date
 ```
 
 ### `Video`
+
 ```
 title, school, locality, county, thumbnailUrl, youtubeUrl
 ```
 
 ### `StudentVote`
+
 ```
 teacherId: ObjectId
 studentName: string, class: string
@@ -110,6 +116,7 @@ createdAt: Date
 ```
 
 ### `VotingState` (singleton)
+
 ```
 status: "not_started" | "active" | "stopped"
 ```
@@ -124,6 +131,7 @@ status: "not_started" | "active" | "stopped"
 - **Session shape**: `{ userId: string, role: "teacher" | "admin" }`
 
 ### Middleware (`middleware.ts`)
+
 - `/teacher/*` → require session with `role=teacher`
 - `/admin/*` → require session with `role=admin`
 - `/student/*` → no session required
@@ -133,9 +141,11 @@ status: "not_started" | "active" | "stopped"
 ## Voting Logic (`lib/borda.ts`)
 
 ### Borda scores
+
 Position 1→12, 2→10, 3→8, 4→7, 5→6, 6→5, 7→4, 8→3, 9→2, 10→1
 
 ### National aggregation (run at display time, not stored)
+
 1. Collect all **submitted** simple teacher votes (each is a 10-video ranking → scored directly)
 2. Collect all **submitted** student-mode teacher records:
    - Take their non-removed StudentVotes, Borda-aggregate them into a school ranking (top 10)
@@ -143,6 +153,7 @@ Position 1→12, 2→10, 3→8, 4→7, 5→6, 6→5, 7→4, 8→3, 9→2, 10→1
 3. Sum all scores per video → sort descending → final ranking
 
 ### Student vote intermediate aggregation
+
 - Apply Borda scoring to each student's ranking
 - Sum per video → sort → take top 10 → this is the school ranking
 - Teacher sees this live ranking during voting (via `/api/teacher/ranking`)
@@ -152,7 +163,9 @@ Position 1→12, 2→10, 3→8, 4→7, 5→6, 6→5, 7→4, 8→3, 9→2, 10→1
 ## Key Page Behaviors
 
 ### Teacher Dashboard (`/teacher`)
+
 State machine based on DB:
+
 - Voting not started → "come back later" message
 - Voting stopped → relevant message
 - No method chosen → redirect to `/teacher/vote-method`
@@ -161,12 +174,14 @@ State machine based on DB:
 - Voted (simple) → show confirmation/summary
 
 ### Teacher Simple Vote (`/teacher/vote`)
+
 - SSR: load videos + teacher's saved draft ranking
 - Drag-and-drop (dnd-kit) + up/down buttons with CSS transition animation
 - Auto-save: PATCH `/api/teacher/vote/save` on each reorder
 - "Cast vote" button → POST `/api/teacher/vote/cast` (validates exactly 10 items, sets `voteSubmitted=true`, saves `submittedRanking`)
 
 ### Teacher Student Mode (`/teacher/students`)
+
 - Three Bootstrap tabs: Instructions+Code, Votes List, Current Ranking
 - Instructions section: join code, copyable direct URL, QR code (`qrcode.react`), regenerate button (confirmation modal)
 - Votes list: SSR + manual Refresh button (client fetch to `/api/teacher/students/votes`)
@@ -174,12 +189,14 @@ State machine based on DB:
 - Submit button: POST `/api/teacher/students/submit` (aggregates + marks teacher submitted)
 
 ### Student Voting (`/student/[code]`)
+
 - SSR: validate code → load videos
 - Prompt for name + class (modal or inline form, client-side state)
 - Same drag-and-drop interface as teacher
 - After cast: POST `/api/student/vote` → success screen with "Vote for another student" button (resets name/class form, same page)
 
 ### Admin Dashboard (`/admin`)
+
 - SSR: load voting state + teacher list + ranking
 - "Start Voting" button (only if not_started)
 - "Stop Voting" button (if active)
@@ -189,6 +206,7 @@ State machine based on DB:
 ---
 
 ## Student Join Code Generation (`lib/student-code.ts`)
+
 - 6-char uppercase alphanumeric
 - Exclude look-alike characters: `0, O, 1, I, L`
 - Alphabet: `ABCDEFGHJKMNPQRSTUVWXYZ23456789` (32 chars)
@@ -197,6 +215,7 @@ State machine based on DB:
 ---
 
 ## Environment Variables (`.env.local`)
+
 ```
 MONGODB_URI=
 IRON_SESSION_PASSWORD=           # 32+ chars
@@ -222,6 +241,7 @@ NEXT_PUBLIC_BASE_URL=            # for QR code URL generation
 ---
 
 ## Verification
+
 - Seed script: `scripts/seed.ts` — creates admin, 2+ teachers, 12+ videos, VotingState
 - Manual test flow:
   1. Admin logs in → starts voting

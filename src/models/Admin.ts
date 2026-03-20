@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IAdmin extends Document {
   email: string;
@@ -16,5 +16,4 @@ const AdminSchema = new Schema<IAdmin>({
   otpSentAt: { type: Date, default: null },
 });
 
-export default (mongoose.models.Admin as mongoose.Model<IAdmin>) ||
-  mongoose.model<IAdmin>('Admin', AdminSchema);
+export default (mongoose.models.Admin as mongoose.Model<IAdmin>) || mongoose.model<IAdmin>('Admin', AdminSchema);

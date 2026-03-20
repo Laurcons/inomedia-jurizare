@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import VotingState from '@/models/VotingState';
 import { getSession } from '@/lib/session';
+import VotingState from '@/models/VotingState';
+import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {

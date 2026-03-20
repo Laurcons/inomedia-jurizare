@@ -1,11 +1,11 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/session';
+import type { VideoItem } from '@/components/VotingInterface';
+import VotingInterface from '@/components/VotingInterface';
 import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
 import Teacher from '@/models/Teacher';
 import Video from '@/models/Video';
 import VotingState from '@/models/VotingState';
-import VotingInterface from '@/components/VotingInterface';
-import type { VideoItem } from '@/components/VotingInterface';
+import { redirect } from 'next/navigation';
 
 export default async function TeacherVotePage() {
   const session = await getSession();
@@ -43,8 +43,7 @@ export default async function TeacherVotePage() {
       <div className="col-lg-8">
         <h2 className="h4 mb-1">Jurizare Simplă</h2>
         <p className="text-muted mb-4">
-          Ordonează videoclipurile pentru a crea clasamentul tău top 10. Modificările sunt salvate
-          automat.
+          Ordonează videoclipurile pentru a crea clasamentul tău top 10. Modificările sunt salvate automat.
         </p>
         <VotingInterface
           rankedVideos={rankedVideos}

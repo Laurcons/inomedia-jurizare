@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { FormEvent, useState } from 'react';
 
 export default function StudentEntryPage() {
   const router = useRouter();
@@ -26,9 +26,7 @@ export default function StudentEntryPage() {
       <div className="card shadow-sm" style={{ maxWidth: 400, width: '100%' }}>
         <div className="card-body p-4">
           <h1 className="h4 mb-1 text-center">Acces elevi</h1>
-          <p className="text-muted text-center mb-4 small">
-            Introdu codul primit de la profesorul tău.
-          </p>
+          <p className="text-muted text-center mb-4 small">Introdu codul primit de la profesorul tău.</p>
 
           {error && <div className="alert alert-danger py-2">{error}</div>}
 

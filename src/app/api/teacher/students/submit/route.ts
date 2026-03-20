@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
-import StudentVote from '@/models/StudentVote';
-import VotingState from '@/models/VotingState';
-import Video from '@/models/Video';
-import { getSession } from '@/lib/session';
 import { aggregateRankings } from '@/lib/borda';
+import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
+import StudentVote from '@/models/StudentVote';
+import Teacher from '@/models/Teacher';
+import Video from '@/models/Video';
+import VotingState from '@/models/VotingState';
+import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
@@ -36,10 +36,7 @@ export async function POST() {
     }).lean();
 
     if (activeVotes.length === 0) {
-      return NextResponse.json(
-        { error: 'Nu există voturi active de trimis.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Nu există voturi active de trimis.' }, { status: 400 });
     }
 
     const rankings = activeVotes.map((v) => v.ranking.map((id) => id.toString()));

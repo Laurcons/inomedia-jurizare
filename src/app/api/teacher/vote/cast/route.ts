@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
-import VotingState from '@/models/VotingState';
-import Video from '@/models/Video';
 import { getSession } from '@/lib/session';
+import Teacher from '@/models/Teacher';
+import Video from '@/models/Video';
+import VotingState from '@/models/VotingState';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,10 +14,7 @@ export async function POST(request: NextRequest) {
 
     const { ranking } = await request.json();
     if (!Array.isArray(ranking) || ranking.length !== 10) {
-      return NextResponse.json(
-        { error: 'Clasamentul trebuie să conțină exact 10 videoclipuri.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Clasamentul trebuie să conțină exact 10 videoclipuri.' }, { status: 400 });
     }
 
     await connectDB();

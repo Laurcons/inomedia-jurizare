@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, FormEvent, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { FormEvent, Suspense, useEffect, useState } from 'react';
 
 function VerifyForm() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function VoteMethodForm() {
   const router = useRouter();
@@ -79,8 +79,7 @@ export default function VoteMethodForm() {
                 <div>
                   <h5 className="card-title mb-1">Jurizare cu Elevi</h5>
                   <p className="card-text text-muted small">
-                    Elevii tăi votează individual, iar voturile lor sunt agregate în clasamentul
-                    școlii.
+                    Elevii tăi votează individual, iar voturile lor sunt agregate în clasamentul școlii.
                   </p>
                 </div>
               </div>
@@ -89,11 +88,7 @@ export default function VoteMethodForm() {
         </div>
       </div>
 
-      <button
-        className="btn btn-primary"
-        onClick={handleConfirm}
-        disabled={!selected || loading}
-      >
+      <button className="btn btn-primary" onClick={handleConfirm} disabled={!selected || loading}>
         {loading ? (
           <>
             <span className="spinner-border spinner-border-sm me-2" />

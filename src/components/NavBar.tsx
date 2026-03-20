@@ -17,9 +17,7 @@ export default function NavBar({ role }: NavBarProps) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
       <div className="container">
-        <span className="navbar-brand fw-semibold">
-          {role === 'admin' ? 'Panou Admin' : 'Platforma de Jurizare'}
-        </span>
+        <span className="navbar-brand fw-semibold">{role === 'admin' ? 'Panou Admin' : 'Platforma de Jurizare'}</span>
         <button className="btn btn-outline-secondary btn-sm" onClick={handleLogout}>
           Deconectare
         </button>

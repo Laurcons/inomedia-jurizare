@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
 import StudentVote from '@/models/StudentVote';
 import Teacher from '@/models/Teacher';
-import { getSession } from '@/lib/session';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function PATCH(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getSession();
     if (!session.userId || session.role !== 'teacher') {

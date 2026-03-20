@@ -2,8 +2,8 @@
  * Seed script: populates the database with sample data for development.
  * Run with: npm run seed
  */
-import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import { resolve } from 'path';
 
 dotenv.config({ path: resolve(process.cwd(), '.env.local') });
@@ -159,12 +159,7 @@ async function seed() {
   console.log('Connected.');
 
   // Clear existing data
-  await Promise.all([
-    Teacher.deleteMany({}),
-    Admin.deleteMany({}),
-    Video.deleteMany({}),
-    VotingState.deleteMany({}),
-  ]);
+  await Promise.all([Teacher.deleteMany({}), Admin.deleteMany({}), Video.deleteMany({}), VotingState.deleteMany({})]);
   console.log('Cleared existing data.');
 
   // Seed admin

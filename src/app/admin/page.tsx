@@ -1,14 +1,12 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/session';
+import { computeNationalRanking } from '@/lib/borda';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
+import { getSession } from '@/lib/session';
 import StudentVote from '@/models/StudentVote';
+import Teacher from '@/models/Teacher';
 import Video from '@/models/Video';
 import VotingState from '@/models/VotingState';
+import { redirect } from 'next/navigation';
 import AdminClient from './AdminClient';
-import { computeNationalRanking } from '@/lib/borda';
-import type { ITeacher } from '@/models/Teacher';
-import type { IVideo } from '@/models/Video';
 
 export default async function AdminPage() {
   const session = await getSession();
@@ -41,13 +39,11 @@ export default async function AdminPage() {
 
     const raw = computeNationalRanking(simpleVotes, schoolRankings);
     const videoMap = new Map(allVideos.map((v) => [v._id.toString(), v.title]));
-    nationalRanking = raw
-      .slice(0, 10)
-      .map(({ videoId, score }) => ({
-        videoId,
-        score,
-        title: videoMap.get(videoId) ?? 'Videoclip necunoscut',
-      }));
+    nationalRanking = raw.slice(0, 10).map(({ videoId, score }) => ({
+      videoId,
+      score,
+      title: videoMap.get(videoId) ?? 'Videoclip necunoscut',
+    }));
   }
 
   // Gather student vote counts per teacher
@@ -55,9 +51,7 @@ export default async function AdminPage() {
     { $match: { removed: false } },
     { $group: { _id: '$teacherId', count: { $sum: 1 } } },
   ]);
-  const studentCountMap = new Map<string, number>(
-    studentVoteCounts.map(({ _id, count }) => [_id.toString(), count]),
-  );
+  const studentCountMap = new Map<string, number>(studentVoteCounts.map(({ _id, count }) => [_id.toString(), count]));
 
   return (
     <AdminClient

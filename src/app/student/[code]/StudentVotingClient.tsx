@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import VotingInterface from '@/components/VotingInterface';
 import type { VideoItem } from '@/components/VotingInterface';
+import VotingInterface from '@/components/VotingInterface';
+import { FormEvent, useState } from 'react';
 
 interface Props {
   teacherId: string;
@@ -60,9 +60,7 @@ export default function StudentVotingClient({ teacherId, code, videos }: Props) 
           <div className="card shadow-sm">
             <div className="card-body p-4">
               <h2 className="h5 mb-1">Bun venit!</h2>
-              <p className="text-muted mb-4 small">
-                Introdu datele tale pentru a continua cu votarea.
-              </p>
+              <p className="text-muted mb-4 small">Introdu datele tale pentru a continua cu votarea.</p>
 
               {formError && <div className="alert alert-danger py-2">{formError}</div>}
 
@@ -106,9 +104,7 @@ export default function StudentVotingClient({ teacherId, code, videos }: Props) 
     <div>
       <div className="mb-3">
         <h2 className="h5 mb-0">Votul tău, {studentName}</h2>
-        <p className="text-muted small">
-          Ordonează videoclipurile pentru a crea clasamentul tău top 10.
-        </p>
+        <p className="text-muted small">Ordonează videoclipurile pentru a crea clasamentul tău top 10.</p>
       </div>
       <VotingInterface
         rankedVideos={videos.slice(0, 10)}

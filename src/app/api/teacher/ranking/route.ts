@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
-import StudentVote from '@/models/StudentVote';
-import Video from '@/models/Video';
-import { getSession } from '@/lib/session';
 import { aggregateRankings } from '@/lib/borda';
+import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
+import StudentVote from '@/models/StudentVote';
+import Teacher from '@/models/Teacher';
+import Video from '@/models/Video';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {

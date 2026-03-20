@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import type { VotingStatus } from '@/models/VotingState';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface TeacherRow {
   id: string;
@@ -46,8 +46,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
   }
 
   async function handleStop() {
-    if (!confirm('Ești sigur că vrei să oprești votarea? Această acțiune nu poate fi anulată.'))
-      return;
+    if (!confirm('Ești sigur că vrei să oprești votarea? Această acțiune nu poate fi anulată.')) return;
     setLoading('stop');
     setError('');
     try {
@@ -72,15 +71,9 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
           <div className="card shadow-sm">
             <div className="card-body p-5">
               <h2 className="h4 mb-3">Jurizarea nu a început</h2>
-              <p className="text-muted mb-4">
-                Apasă butonul de mai jos pentru a deschide perioada de jurizare.
-              </p>
+              <p className="text-muted mb-4">Apasă butonul de mai jos pentru a deschide perioada de jurizare.</p>
               {error && <div className="alert alert-danger">{error}</div>}
-              <button
-                className="btn btn-success btn-lg"
-                onClick={handleStart}
-                disabled={loading === 'start'}
-              >
+              <button className="btn btn-success btn-lg" onClick={handleStart} disabled={loading === 'start'}>
                 {loading === 'start' ? (
                   <>
                     <span className="spinner-border spinner-border-sm me-2" />
@@ -107,11 +100,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
           </span>
         </div>
         {status === 'active' && (
-          <button
-            className="btn btn-outline-danger"
-            onClick={handleStop}
-            disabled={loading === 'stop'}
-          >
+          <button className="btn btn-outline-danger" onClick={handleStop} disabled={loading === 'stop'}>
             {loading === 'stop' ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" />
@@ -133,9 +122,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
             <div className="card-header fw-semibold">Clasament național curent</div>
             <div className="card-body p-0">
               {nationalRanking.length === 0 ? (
-                <p className="text-muted p-3 mb-0 small">
-                  Nu există voturi finalizate încă.
-                </p>
+                <p className="text-muted p-3 mb-0 small">Nu există voturi finalizate încă.</p>
               ) : (
                 <ol className="list-group list-group-flush list-group-numbered">
                   {nationalRanking.map((entry) => (
@@ -157,8 +144,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
         <div className="col-lg-8">
           <div className="card">
             <div className="card-header fw-semibold">
-              Profesori ({teachers.filter((t) => t.voteSubmitted).length}/{teachers.length} au
-              votat)
+              Profesori ({teachers.filter((t) => t.voteSubmitted).length}/{teachers.length} au votat)
             </div>
             <div className="table-responsive">
               <table className="table table-hover table-sm align-middle mb-0">
@@ -182,9 +168,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
                       <td className="small">
                         {votingMethodLabel(t.votingMethod)}
                         {t.votingMethod === 'students' && (
-                          <span className="text-muted ms-1">
-                            ({t.studentVoteCount} elevi)
-                          </span>
+                          <span className="text-muted ms-1">({t.studentVoteCount} elevi)</span>
                         )}
                       </td>
                       <td>

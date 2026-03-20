@@ -1,25 +1,25 @@
 'use client';
 
-import { CSSProperties, useState, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
-  DragStartEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
   useSortable,
+  verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useRouter } from 'next/navigation';
+import { CSSProperties, useCallback, useRef, useState } from 'react';
 
 export interface VideoItem {
   id: string;
@@ -71,15 +71,9 @@ function SortableCard({
   let animStyle: CSSProperties = {};
   if (buttonMove) {
     if (buttonMove.movedId === video.id) {
-      animStyle.animation =
-        buttonMove.direction === 'up'
-          ? 'slideFromBelow 0.22s ease'
-          : 'slideFromAbove 0.22s ease';
+      animStyle.animation = buttonMove.direction === 'up' ? 'slideFromBelow 0.22s ease' : 'slideFromAbove 0.22s ease';
     } else if (buttonMove.displacedId === video.id) {
-      animStyle.animation =
-        buttonMove.direction === 'up'
-          ? 'slideFromAbove 0.22s ease'
-          : 'slideFromBelow 0.22s ease';
+      animStyle.animation = buttonMove.direction === 'up' ? 'slideFromAbove 0.22s ease' : 'slideFromBelow 0.22s ease';
     }
   }
 
@@ -293,9 +287,7 @@ export default function VotingInterface({
     if (index === 10) {
       return [
         <div key="rest-divider" className="mt-3 mb-2">
-          <p className="text-muted small fw-semibold text-uppercase mb-0">
-            Restul videoclipurilor
-          </p>
+          <p className="text-muted small fw-semibold text-uppercase mb-0">Restul videoclipurilor</p>
         </div>,
         card,
       ];

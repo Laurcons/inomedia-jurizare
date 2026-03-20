@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
-import VotingState from '@/models/VotingState';
 import { getSession } from '@/lib/session';
 import { generateUniqueStudentCode } from '@/lib/student-code';
+import Teacher from '@/models/Teacher';
+import VotingState from '@/models/VotingState';
+import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
@@ -27,7 +27,10 @@ export async function POST() {
 
     const allTeachers = await Teacher.find({}, 'joinCode').lean();
     const activeCodes = new Set(
-      allTeachers.filter((t) => t._id.toString() !== session.userId).map((t) => t.joinCode).filter(Boolean),
+      allTeachers
+        .filter((t) => t._id.toString() !== session.userId)
+        .map((t) => t.joinCode)
+        .filter(Boolean),
     );
 
     const newCode = generateUniqueStudentCode(activeCodes);

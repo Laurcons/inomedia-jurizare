@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getIronSession } from 'iron-session';
 import type { SessionData } from '@/lib/session';
+import { getIronSession } from 'iron-session';
+import { NextRequest, NextResponse } from 'next/server';
 
 const sessionOptions = {
   password: process.env.IRON_SESSION_PASSWORD!,

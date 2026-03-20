@@ -1,12 +1,12 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/session';
-import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
-import StudentVote from '@/models/StudentVote';
-import VotingState from '@/models/VotingState';
-import Video from '@/models/Video';
-import StudentsClient from './StudentsClient';
 import { aggregateRankings } from '@/lib/borda';
+import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
+import StudentVote from '@/models/StudentVote';
+import Teacher from '@/models/Teacher';
+import Video from '@/models/Video';
+import VotingState from '@/models/VotingState';
+import { redirect } from 'next/navigation';
+import StudentsClient from './StudentsClient';
 
 export default async function TeacherStudentsPage() {
   const session = await getSession();
@@ -23,9 +23,7 @@ export default async function TeacherStudentsPage() {
   const isStopped = votingState?.status === 'stopped';
   const isActive = votingState?.status === 'active';
 
-  const studentVotes = await StudentVote.find({ teacherId: teacher._id })
-    .sort({ createdAt: 1 })
-    .lean();
+  const studentVotes = await StudentVote.find({ teacherId: teacher._id }).sort({ createdAt: 1 }).lean();
 
   // Compute current ranking
   const activeVotes = studentVotes.filter((v) => !v.removed);
@@ -36,7 +34,9 @@ export default async function TeacherStudentsPage() {
   if (schoolRanking && schoolRanking.length > 0) {
     const videos = await Video.find({ _id: { $in: schoolRanking } }).lean();
     const videoMap = new Map(videos.map((v) => [v._id.toString(), { id: v._id.toString(), title: v.title }]));
-    rankingVideos = schoolRanking.map((id) => videoMap.get(id)).filter((v): v is { id: string; title: string } => v != null);
+    rankingVideos = schoolRanking
+      .map((id) => videoMap.get(id))
+      .filter((v): v is { id: string; title: string } => v != null);
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? '';

@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
-import VotingState from '@/models/VotingState';
 import { getSession } from '@/lib/session';
 import { generateUniqueStudentCode } from '@/lib/student-code';
+import Teacher from '@/models/Teacher';
+import VotingState from '@/models/VotingState';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {

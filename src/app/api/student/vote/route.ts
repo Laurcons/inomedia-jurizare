@@ -1,26 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
 import StudentVote from '@/models/StudentVote';
+import Teacher from '@/models/Teacher';
 import Video from '@/models/Video';
 import VotingState from '@/models/VotingState';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
     const { ranking, studentName, studentClass, code } = await request.json();
 
     if (!code || !ranking || !Array.isArray(ranking) || ranking.length !== 10) {
-      return NextResponse.json(
-        { error: 'Clasamentul trebuie să conțină exact 10 videoclipuri.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Clasamentul trebuie să conțină exact 10 videoclipuri.' }, { status: 400 });
     }
 
     if (!studentName?.trim() || !studentClass?.trim()) {
-      return NextResponse.json(
-        { error: 'Numele și clasa sunt obligatorii.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Numele și clasa sunt obligatorii.' }, { status: 400 });
     }
 
     await connectDB();
@@ -36,10 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (teacher.voteSubmitted) {
-      return NextResponse.json(
-        { error: 'Profesorul a finalizat deja colectarea voturilor.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Profesorul a finalizat deja colectarea voturilor.' }, { status: 400 });
     }
 
     // Validate video IDs

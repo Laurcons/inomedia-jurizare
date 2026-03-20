@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
 import { getSession } from '@/lib/session';
+import Teacher from '@/models/Teacher';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {

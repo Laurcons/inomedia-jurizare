@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 
 const QRCodeSVG = dynamic(() => import('qrcode.react').then((m) => m.QRCodeSVG), { ssr: false });
 
@@ -81,9 +81,7 @@ export default function StudentsClient({
   async function toggleRemove(voteId: string) {
     const res = await fetch(`/api/teacher/students/votes/${voteId}`, { method: 'PATCH' });
     if (res.ok) {
-      setVotes((prev) =>
-        prev.map((v) => (v.id === voteId ? { ...v, removed: !v.removed } : v)),
-      );
+      setVotes((prev) => prev.map((v) => (v.id === voteId ? { ...v, removed: !v.removed } : v)));
     }
   }
 
@@ -124,7 +122,9 @@ export default function StudentsClient({
         <div className="col-md-6 text-center py-5">
           <div className="card shadow-sm border-success">
             <div className="card-body p-5">
-              <div className="text-success mb-3" style={{ fontSize: '3rem' }}>✓</div>
+              <div className="text-success mb-3" style={{ fontSize: '3rem' }}>
+                ✓
+              </div>
               <h2 className="h4 mb-3">Voturile au fost trimise!</h2>
               <p className="text-muted">Clasamentul elevilor tăi a fost înregistrat cu succes.</p>
             </div>
@@ -137,9 +137,7 @@ export default function StudentsClient({
   return (
     <div>
       <h2 className="h4 mb-1">Jurizare cu Elevi</h2>
-      {isStopped && (
-        <div className="alert alert-warning">Perioada de jurizare s-a încheiat.</div>
-      )}
+      {isStopped && <div className="alert alert-warning">Perioada de jurizare s-a încheiat.</div>}
 
       <ul className="nav nav-tabs mb-4 mt-3">
         <li className="nav-item">
@@ -151,14 +149,8 @@ export default function StudentsClient({
           </button>
         </li>
         <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === 'votes' ? 'active' : ''}`}
-            onClick={() => setActiveTab('votes')}
-          >
-            Voturi primite{' '}
-            <span className="badge bg-secondary ms-1">
-              {votes.filter((v) => !v.removed).length}
-            </span>
+          <button className={`nav-link ${activeTab === 'votes' ? 'active' : ''}`} onClick={() => setActiveTab('votes')}>
+            Voturi primite <span className="badge bg-secondary ms-1">{votes.filter((v) => !v.removed).length}</span>
           </button>
         </li>
         <li className="nav-item">
@@ -178,17 +170,13 @@ export default function StudentsClient({
               <div className="card-body">
                 <h5 className="card-title">Cod de acces pentru elevi</h5>
                 <p className="text-muted small mb-3">
-                  Transmite codul sau link-ul direct elevilor tăi. Ei pot accesa platforma și vota
-                  independent.
+                  Transmite codul sau link-ul direct elevilor tăi. Ei pot accesa platforma și vota independent.
                 </p>
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Cod</label>
                   <div className="d-flex align-items-center gap-2">
-                    <code
-                      className="fs-3 fw-bold bg-light px-3 py-2 rounded"
-                      style={{ letterSpacing: '0.3em' }}
-                    >
+                    <code className="fs-3 fw-bold bg-light px-3 py-2 rounded" style={{ letterSpacing: '0.3em' }}>
                       {joinCode}
                     </code>
                     <button
@@ -204,12 +192,7 @@ export default function StudentsClient({
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Link direct</label>
                   <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control font-monospace small"
-                      value={directUrl}
-                      readOnly
-                    />
+                    <input type="text" className="form-control font-monospace small" value={directUrl} readOnly />
                     <button
                       className="btn btn-outline-secondary"
                       onClick={() => navigator.clipboard.writeText(directUrl)}
@@ -219,7 +202,6 @@ export default function StudentsClient({
                     </button>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -238,16 +220,8 @@ export default function StudentsClient({
             <span className="text-muted small">
               {votes.filter((v) => !v.removed).length} voturi active din {votes.length} total
             </span>
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              onClick={refreshVotes}
-              disabled={refreshingVotes}
-            >
-              {refreshingVotes ? (
-                <span className="spinner-border spinner-border-sm" />
-              ) : (
-                'Reîncarcă'
-              )}
+            <button className="btn btn-outline-secondary btn-sm" onClick={refreshVotes} disabled={refreshingVotes}>
+              {refreshingVotes ? <span className="spinner-border spinner-border-sm" /> : 'Reîncarcă'}
             </button>
           </div>
 
@@ -277,9 +251,7 @@ export default function StudentsClient({
                           {vote.studentClass}
                         </span>
                       </td>
-                      <td className="small text-muted">
-                        {new Date(vote.createdAt).toLocaleString('ro-RO')}
-                      </td>
+                      <td className="small text-muted">{new Date(vote.createdAt).toLocaleString('ro-RO')}</td>
                       <td>
                         {isActive && (
                           <button
@@ -314,9 +286,7 @@ export default function StudentsClient({
                   'Trimite voturile elevilor'
                 )}
               </button>
-              <p className="text-muted small mt-2">
-                Apasă acest buton când toți elevii tăi au votat.
-              </p>
+              <p className="text-muted small mt-2">Apasă acest buton când toți elevii tăi au votat.</p>
             </div>
           )}
         </div>
@@ -325,19 +295,9 @@ export default function StudentsClient({
       {activeTab === 'ranking' && (
         <div>
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <span className="text-muted small">
-              Bazat pe voturile active ale elevilor tăi
-            </span>
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              onClick={refreshRanking}
-              disabled={refreshingRanking}
-            >
-              {refreshingRanking ? (
-                <span className="spinner-border spinner-border-sm" />
-              ) : (
-                'Reîncarcă'
-              )}
+            <span className="text-muted small">Bazat pe voturile active ale elevilor tăi</span>
+            <button className="btn btn-outline-secondary btn-sm" onClick={refreshRanking} disabled={refreshingRanking}>
+              {refreshingRanking ? <span className="spinner-border spinner-border-sm" /> : 'Reîncarcă'}
             </button>
           </div>
 
@@ -364,30 +324,19 @@ export default function StudentsClient({
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Regenerează codul de acces</h5>
-                <button
-                  className="btn-close"
-                  onClick={() => setShowRegenerateModal(false)}
-                />
+                <button className="btn-close" onClick={() => setShowRegenerateModal(false)} />
               </div>
               <div className="modal-body">
                 <p>
-                  Ești sigur că vrei să generezi un cod nou? Voturile existente vor fi păstrate,
-                  dar codul vechi <strong>{joinCode}</strong> nu va mai fi acceptat pentru voturi
-                  noi.
+                  Ești sigur că vrei să generezi un cod nou? Voturile existente vor fi păstrate, dar codul vechi{' '}
+                  <strong>{joinCode}</strong> nu va mai fi acceptat pentru voturi noi.
                 </p>
               </div>
               <div className="modal-footer">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => setShowRegenerateModal(false)}
-                >
+                <button className="btn btn-secondary" onClick={() => setShowRegenerateModal(false)}>
                   Anulează
                 </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={handleRegenerate}
-                  disabled={regenerating}
-                >
+                <button className="btn btn-danger" onClick={handleRegenerate} disabled={regenerating}>
                   {regenerating ? 'Se generează...' : 'Generează cod nou'}
                 </button>
               </div>

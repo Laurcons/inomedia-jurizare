@@ -25,11 +25,19 @@ body {
 }
 
 @keyframes slideFromBelow {
-  from { transform: translateY(64px); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(64px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideFromAbove {
-  from { transform: translateY(-64px); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(-64px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

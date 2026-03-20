@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Teacher from '@/models/Teacher';
 import Admin from '@/models/Admin';
-import { sendOtpEmail } from '@/lib/mailer';
+import Teacher from '@/models/Teacher';
+import { NextRequest, NextResponse } from 'next/server';
 
 function generateOtp(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -27,21 +26,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Adresa de email nu a fost găsită în sistem.' },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: 'Adresa de email nu a fost găsită în sistem.' }, { status: 404 });
     }
 
     // Rate limit: once per minute
     if (user.otpSentAt && Date.now() - new Date(user.otpSentAt).getTime() < 60_000) {
-      const secondsLeft = Math.ceil(
-        (60_000 - (Date.now() - new Date(user.otpSentAt).getTime())) / 1000,
-      );
-      return NextResponse.json(
-        { error: `Poți solicita un nou cod în ${secondsLeft} secunde.` },
-        { status: 429 },
-      );
+      const secondsLeft = Math.ceil((60_000 - (Date.now() - new Date(user.otpSentAt).getTime())) / 1000);
+      return NextResponse.json({ error: `Poți solicita un nou cod în ${secondsLeft} secunde.` }, { status: 429 });
     }
 
     const otp = generateOtp();

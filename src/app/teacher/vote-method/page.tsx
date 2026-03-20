@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/mongodb';
+import { getSession } from '@/lib/session';
 import Teacher from '@/models/Teacher';
 import VotingState from '@/models/VotingState';
+import { redirect } from 'next/navigation';
 import VoteMethodForm from './VoteMethodForm';
 
 export default async function VoteMethodPage() {
@@ -22,9 +22,7 @@ export default async function VoteMethodPage() {
     <div className="row justify-content-center">
       <div className="col-md-7">
         <h2 className="h4 mb-1">Alege metoda de jurizare</h2>
-        <p className="text-muted mb-4">
-          Această alegere nu poate fi modificată ulterior.
-        </p>
+        <p className="text-muted mb-4">Această alegere nu poate fi modificată ulterior.</p>
         <VoteMethodForm />
       </div>
     </div>

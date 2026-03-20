@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IVideo extends Document {
   title: string;
@@ -18,5 +18,4 @@ const VideoSchema = new Schema<IVideo>({
   youtubeUrl: { type: String, required: true },
 });
 
-export default (mongoose.models.Video as mongoose.Model<IVideo>) ||
-  mongoose.model<IVideo>('Video', VideoSchema);
+export default (mongoose.models.Video as mongoose.Model<IVideo>) || mongoose.model<IVideo>('Video', VideoSchema);

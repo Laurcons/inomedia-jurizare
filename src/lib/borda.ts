@@ -55,7 +55,5 @@ export function computeNationalRanking(
   simpleVotes.forEach(addVote);
   schoolRankings.forEach(addVote);
 
-  return [...totals.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .map(([videoId, score]) => ({ videoId, score }));
+  return [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([videoId, score]) => ({ videoId, score }));
 }
