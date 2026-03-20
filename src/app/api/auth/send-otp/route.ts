@@ -1,4 +1,5 @@
 import { connectDB } from '@/lib/mongodb';
+import { sendOtpEmail } from '@/lib/mailer';
 import Admin from '@/models/Admin';
 import Teacher from '@/models/Teacher';
 import { NextRequest, NextResponse } from 'next/server';
@@ -43,7 +44,9 @@ export async function POST(request: NextRequest) {
     user.otpSentAt = new Date();
     await user.save();
 
-    // await sendOtpEmail(normalizedEmail, otp);
+    if (process.env.DEV_MODE !== 'true') {
+      await sendOtpEmail(normalizedEmail, otp);
+    }
 
     return NextResponse.json({ success: true, role });
   } catch {
