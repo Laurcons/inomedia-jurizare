@@ -44,6 +44,7 @@ They will access the platform via a URL with a code. The platform should have a 
 * As a Student, I want to be able to access the voting page directly using a direct URL with the built-in code.
 * As a Student, I need to be prompted for my name and class before being able to cast a vote.
 * As a Student, I should be able to reorder the list of videos and generate a top-10 ranking. When I am ready, I should be able to Cast my vote.
+* As a Student or Teacher (during voting), I should be able to see a list of all competition videos, with their title, thumbnail, and a button to open the YouTube link, via a button displayed above the voting list.
 * As a Student, I want to be able to cast multiple votes (in turn) on the same device. No restrictions should be imposed. If casting another vote is desired, this new vote must be treated as another student's vote. Moderation (to prevent multiple votes per student) is done by the teacher.
 
 * As an Admin, if voting has not been started, I want to see in the admin dashboard only a button prompting me to start voting.

@@ -305,6 +305,12 @@ export default function VotingInterface({
 
   return (
     <div>
+      <div className="mb-3">
+        <a href="/videos" className="btn btn-sm btn-outline-secondary">
+          ▶ Vizionează videoclipurile
+        </a>
+      </div>
+
       {castError && <div className="alert alert-danger">{castError}</div>}
 
       {/* Section label with inline save indicator — reserved space prevents layout shift */}
