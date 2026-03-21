@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     await teacher.save();
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, joinCode: teacher.joinCode });
   } catch {
     return NextResponse.json({ error: 'Eroare internă.' }, { status: 500 });
   }
