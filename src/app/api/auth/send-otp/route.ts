@@ -49,7 +49,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, role });
-  } catch {
+  } catch (err: any) {
+    console.log(err);
     return NextResponse.json({ error: 'Eroare internă. Încearcă din nou.' }, { status: 500 });
   }
 }

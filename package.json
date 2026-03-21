@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "seed:load": "tsx scripts/seed-load.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
