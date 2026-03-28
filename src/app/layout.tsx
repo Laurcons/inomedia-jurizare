@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Platforma de Jurizare',
-  description: 'Platformă de votare pentru competiția națională de videoclipuri istorice',
+  title: 'Concursul „Inomedia. Interferențe Spirituale”',
+  description: 'Platformă de votare pentru Inomedia',
 };
 
 export default function RootLayout({

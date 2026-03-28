@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Rate limit: once per minute
-    if (user.otpSentAt && Date.now() - new Date(user.otpSentAt).getTime() < 60_000) {
+    if (process.env.DEV_MODE !== 'true' && user.otpSentAt && Date.now() - new Date(user.otpSentAt).getTime() < 60_000) {
       const secondsLeft = Math.ceil((60_000 - (Date.now() - new Date(user.otpSentAt).getTime())) / 1000);
       return NextResponse.json({ error: `Poți solicita un nou cod în ${secondsLeft} secunde.` }, { status: 429 });
     }

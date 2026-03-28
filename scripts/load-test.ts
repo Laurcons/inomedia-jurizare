@@ -5,15 +5,16 @@
  *   TARGET_URL=https://other-host.example.com npm run load-test
  */
 
-const TARGET = 'http://localhost:3000'; // ?? 'https://inomedia-2026.laurcons.ro';
+// const TARGET = 'http://localhost:3000';
+const TARGET = 'https://inomedia-2026.laurcons.ro';
 
 const SIMPLE_TEACHERS = 100; // teachers 1–100
 const STUDENT_TEACHERS = 100; // teachers 101–200
 const STUDENTS_PER_TEACHER = 30;
 
-const JITTER_MAX_MS = 4000; // each actor waits up to this long before starting
-const THINK_MIN_MS = 150; // min pause between requests within one actor
-const THINK_MAX_MS = 600; // max pause between requests within one actor
+const JITTER_MAX_MS = 10000; // each actor waits up to this long before starting
+const THINK_MIN_MS = 1000; // min pause between requests within one actor
+const THINK_MAX_MS = 10000; // max pause between requests within one actor
 
 // ---------------------------------------------------------------------------
 // Metrics

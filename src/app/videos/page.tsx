@@ -23,7 +23,10 @@ export default async function VideosPage() {
                 height={45}
                 style={{ objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}
               />
-              <span className="flex-grow-1 fw-medium">{video.title}</span>
+              <div className="flex-grow-1">
+                <div className="fw-medium">{video.title}</div>
+                <div className="text-muted small">{video.school}, {video.locality}</div>
+              </div>
               <a
                 href={video.youtubeUrl}
                 target="_blank"

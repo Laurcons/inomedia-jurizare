@@ -16,7 +16,7 @@ export async function sendOtpEmail(to: string, otp: string): Promise<void> {
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
     to,
-    subject: 'Cod de verificare – Platforma de Jurizare',
+    subject: 'Cod de verificare – Inomedia',
     text: `Codul tău de verificare este: ${otp}\n\nCodul este valabil 10 minute.`,
     html: `
       <div style="font-family: sans-serif; max-width: 400px; margin: 0 auto;">
