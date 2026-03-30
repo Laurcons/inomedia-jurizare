@@ -41,7 +41,12 @@ export default async function TeacherVotePage() {
   return (
     <div className="row">
       <div className="col-lg-8">
-        <h2 className="h4 mb-1">Jurizare Simplă</h2>
+        <div className="d-flex align-items-baseline justify-content-between mb-1">
+          <h2 className="h4 mb-0">Jurizare Simplă</h2>
+          <a href="/tutorial" className="text-muted small text-decoration-none">
+            Am nevoie de ajutor
+          </a>
+        </div>
         <p className="text-muted mb-4">
           Ordonează videoclipurile pentru a crea clasamentul tău top 10. Modificările sunt salvate automat.
         </p>

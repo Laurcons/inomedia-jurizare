@@ -88,16 +88,21 @@ export default function VoteMethodForm() {
         </div>
       </div>
 
-      <button className="btn btn-primary" onClick={handleConfirm} disabled={!selected || loading}>
-        {loading ? (
-          <>
-            <span className="spinner-border spinner-border-sm me-2" />
-            Se salvează...
-          </>
-        ) : (
-          'Confirmă alegerea'
-        )}
-      </button>
+      <div className="d-flex align-items-center gap-3">
+        <button className="btn btn-primary" onClick={handleConfirm} disabled={!selected || loading}>
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" />
+              Se salvează...
+            </>
+          ) : (
+            'Confirmă alegerea'
+          )}
+        </button>
+        <a href="/tutorial" className="text-muted small text-decoration-none">
+          Am nevoie de ajutor
+        </a>
+      </div>
     </div>
   );
 }

@@ -73,9 +73,14 @@ export default function LoginPage() {
           </form>
 
           <hr className="my-3" />
-          <p className="text-center mb-0">
+          <p className="text-center mb-1">
             <a href="/student" className="text-decoration-none">
               Sunt elev →
+            </a>
+          </p>
+          <p className="text-center mb-0">
+            <a href="/tutorial" className="text-muted small text-decoration-none">
+              Am nevoie de ajutor
             </a>
           </p>
         </div>

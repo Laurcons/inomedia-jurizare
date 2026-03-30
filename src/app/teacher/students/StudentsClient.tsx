@@ -136,7 +136,12 @@ export default function StudentsClient({
 
   return (
     <div>
-      <h2 className="h4 mb-1">Jurizare cu Elevi</h2>
+      <div className="d-flex align-items-baseline justify-content-between mb-1">
+        <h2 className="h4 mb-0">Jurizare cu Elevi</h2>
+        <a href="/tutorial" className="text-muted small text-decoration-none">
+          Am nevoie de ajutor
+        </a>
+      </div>
       {isStopped && <div className="alert alert-warning">Perioada de jurizare s-a încheiat.</div>}
 
       <ul className="nav nav-tabs mb-4 mt-3">
