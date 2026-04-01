@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inomedia Jurizare
 
-## Getting Started
+A voting platform for the *Inomedia. Interferențe Spirituale* competition — a Romanian nation-wide school contest where students create short videos about historical events and figures.
 
-First, run the development server:
+The app lets coordinating teachers rank videos either directly (simple vote) or by aggregating votes from their students (student vote). An admin oversees the process and controls the voting window. Rankings are computed using a Borda count.
+
+## Tech stack
+
+- **Next.js 16** (App Router, TypeScript)
+- **MongoDB** via Mongoose
+- **Bootstrap 5** for UI
+- **iron-session** for auth (email OTP, no passwords)
+- **dnd-kit** for drag-and-drop voting
+
+## Running locally
 
 ```bash
+cp .env.local.example .env.local  # fill in MONGODB_URI, IRON_SESSION_PASSWORD, SMTP vars
+npm install
+npm run seed   # populate DB with sample data
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All skill levels welcome. Good starting points:
 
-## Learn More
+- **UI/UX** — improve responsiveness, accessibility, or visual polish
+- **Voting logic** — `src/lib/borda.ts` is self-contained and well-scoped
+- **New features** — check the spec in `docs/product.md` for anything not yet implemented
+- **Bugs & ideas** — open an issue, no PR required
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you're new to Next.js or the stack, `docs/product.md` is a great place to understand what the app is supposed to do before diving into code.

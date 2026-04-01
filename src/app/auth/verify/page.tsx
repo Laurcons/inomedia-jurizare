@@ -75,7 +75,7 @@ function VerifyForm() {
   }
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center">
+    <div className="flex-grow-1 d-flex align-items-center justify-content-center">
       <div className="card shadow-sm" style={{ maxWidth: 420, width: '100%' }}>
         <div className="card-body p-4">
           <h1 className="h4 mb-1 text-center">Verificare cod</h1>
