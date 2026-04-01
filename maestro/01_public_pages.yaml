@@ -1,0 +1,42 @@
+url: http://localhost:3000
+---
+# Public pages — no auth, no voting-state dependency.
+# Run at any time, even before seed.
+
+- launchApp
+
+# Home page
+- assertVisible: 'Autentificare (profesor / admin)'
+- assertVisible: 'Sunt elev'
+
+# Videos page
+- openLink: http://localhost:3000/videos
+- assertVisible: 'Videoclipurile concursului'
+- assertVisible: 'Video Test 1'
+- assertVisible: '▶ YouTube'
+
+# Tutorial page
+- openLink: http://localhost:3000/tutorial
+- assertVisible: 'Ghid pentru profesori'
+- assertVisible: 'Jurizare Simplă'
+- scrollUntilVisible:
+    element: '3. Cum se calculează scorul'
+
+# 404 page
+- openLink: http://localhost:3000/nonexistent-page
+- assertVisible: '404'
+- assertVisible: 'Pagina nu a fost găsită.'
+- tapOn: 'Înapoi la pagina principală'
+- assertVisible: 'Sunt elev'
+
+# Student entry page — valid navigation
+- openLink: http://localhost:3000/student
+- assertVisible: 'Acces elevi'
+- assertVisible: 'Cod de acces'
+
+# Student entry — short code shows validation error
+- tapOn:
+    id: 'code'
+- inputText: 'ABC'
+- tapOn: 'Continuă'
+- assertVisible: 'Codul trebuie să aibă 6 caractere.'

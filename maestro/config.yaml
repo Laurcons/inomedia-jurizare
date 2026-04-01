@@ -1,0 +1,11 @@
+executionOrder:
+  continueOnFailure: false
+  flowsOrder:
+    - 00_login_smoke
+    - 01_public_pages
+    - 02_admin_start_voting
+    - 03_teacher_simple_vote
+    - 04_teacher_students_setup
+    - 05_student_vote
+    - 06_teacher_students_submit
+    - 07_admin_stop_voting

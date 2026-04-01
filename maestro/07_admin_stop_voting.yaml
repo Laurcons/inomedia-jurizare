@@ -1,0 +1,31 @@
+url: http://localhost:3000/auth/login
+---
+# Admin views the national ranking and stops the voting period.
+# Depends on: 03_teacher_simple_vote and 06_teacher_students_submit (votes submitted)
+
+- launchApp
+- assertVisible: "Autentificare"
+- runFlow:
+    file: helpers/_login.yaml
+    env:
+      LOGIN_EMAIL: "admin@test.ro"
+
+- assertVisible: "Jurizare activă"
+- assertVisible: "Panou de administrare"
+
+# National ranking — two teachers have submitted
+- assertVisible: "Clasament național curent"
+- assertVisible: "Video Test 1"
+
+# Teachers table — check submitted status
+- assertVisible: "Profesor Test Simple"
+- assertVisible: "Profesor Test Ready"
+
+# Stop voting — Maestro auto-accepts native browser confirm() dialogs
+- tapOn: "Oprește jurizarea"
+
+- assertVisible: "Jurizare încheiată"
+
+# Verify voting state is now stopped for students
+- openLink: http://localhost:3000/student/ABCDEF
+- assertVisible: "Jurizarea s-a încheiat"

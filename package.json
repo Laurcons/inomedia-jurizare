@@ -9,6 +9,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "seed": "tsx scripts/seed.ts",
+    "seed:test": "tsx scripts/seed-test.ts",
     "seed:load": "tsx scripts/seed-load.ts",
     "load-test": "tsx scripts/load-test.ts"
   },

@@ -1,0 +1,14 @@
+# Reusable login sub-flow.
+# Required env var: LOGIN_EMAIL
+# The parent flow must open /auth/login before calling this.
+url: http://localhost:3000/auth/login
+---
+- tapOn:
+    id: "email"
+- inputText: ${LOGIN_EMAIL}
+- tapOn: "Trimite codul"
+- assertVisible: "Verificare cod"
+- tapOn:
+    id: "otp"
+- inputText: "000000"
+- tapOn: "Autentifică-mă"

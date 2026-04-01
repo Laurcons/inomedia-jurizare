@@ -1,0 +1,30 @@
+url: http://localhost:3000/auth/login
+---
+# teacher.simple selects the simple voting method and submits a ranking.
+# Depends on: 02_admin_start_voting (voting must be active)
+
+- launchApp
+- assertVisible: "Autentificare"
+- runFlow:
+    file: helpers/_login.yaml
+    env:
+      LOGIN_EMAIL: "teacher.simple@test.ro"
+
+# Voting is active and no method chosen → redirected to /teacher/vote-method
+- assertVisible: "Alege metoda de jurizare"
+- assertVisible: "Această alegere nu poate fi modificată ulterior."
+
+# Select simple voting
+- tapOn: "Jurizare Simplă"
+- tapOn: "Confirmă alegerea"
+
+# Redirected to /teacher/vote
+- assertVisible: "Jurizare Simplă"
+- assertVisible: "Top 10"
+- assertVisible: "Video Test 1"
+
+# Submit vote (all 10 videos are already in the top 10 list)
+- tapOn: "Trimite votul"
+
+# Success — redirected to /teacher
+- assertVisible: "Votul a fost trimis!"

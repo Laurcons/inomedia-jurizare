@@ -66,8 +66,9 @@ export default function StudentVotingClient({ teacherId, code, videos }: Props) 
 
               <form onSubmit={handleIdentify}>
                 <div className="mb-3">
-                  <label className="form-label">Prenume și nume</label>
+                  <label htmlFor="studentName" className="form-label">Prenume și nume</label>
                   <input
+                    id="studentName"
                     type="text"
                     className="form-control"
                     value={studentName}
@@ -78,8 +79,9 @@ export default function StudentVotingClient({ teacherId, code, videos }: Props) 
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="form-label">Clasă</label>
+                  <label htmlFor="studentClass" className="form-label">Clasă</label>
                   <input
+                    id="studentClass"
                     type="text"
                     className="form-control"
                     value={studentClass}

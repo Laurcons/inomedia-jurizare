@@ -1,0 +1,42 @@
+url: http://localhost:3000/student/ABCDEF
+---
+# Two students vote using teacher.ready's pre-seeded join code ABCDEF.
+# Depends on: 02_admin_start_voting (voting must be active)
+# teacher.ready@test.ro is seeded with votingMethod=students, joinCode=ABCDEF.
+
+- launchApp
+
+# Identification step
+- assertVisible: "Bun venit!"
+- tapOn:
+    id: "studentName"
+- inputText: "Popescu Ioan"
+- tapOn:
+    id: "studentClass"
+- inputText: "IX A"
+- tapOn: "Continuă"
+
+# Voting step
+- assertVisible: "Votul tău, Popescu Ioan"
+- assertVisible: "Top 10"
+- assertVisible: "Video Test 1"
+- tapOn: "Trimite votul"
+
+# Success
+- assertVisible: "Votul a fost trimis!"
+- assertVisible: "Mulțumim pentru participare, Popescu Ioan!"
+
+# Second student votes
+- tapOn: "Alt elev votează"
+- assertVisible: "Bun venit!"
+- tapOn:
+    id: "studentName"
+- inputText: "Ionescu Maria"
+- tapOn:
+    id: "studentClass"
+- inputText: "X B"
+- tapOn: "Continuă"
+- assertVisible: "Votul tău, Ionescu Maria"
+- tapOn: "Trimite votul"
+- assertVisible: "Votul a fost trimis!"
+- assertVisible: "Mulțumim pentru participare, Ionescu Maria!"

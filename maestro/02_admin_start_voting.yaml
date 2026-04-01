@@ -1,0 +1,25 @@
+url: http://localhost:3000/auth/login
+---
+# Admin logs in and starts the voting period.
+# Must run before any teacher/student voting flows.
+
+- launchApp
+- assertVisible: "Autentificare"
+- runFlow:
+    file: helpers/_login.yaml
+    env:
+      LOGIN_EMAIL: "admin@test.ro"
+
+# Admin dashboard — voting not started yet
+- assertVisible: "Jurizarea nu a început"
+- assertVisible: "Pornește jurizarea"
+
+# Start voting
+- tapOn: "Pornește jurizarea"
+- assertVisible: "Jurizare activă"
+- assertVisible: "Panou de administrare"
+
+# Teachers table is visible (none have voted yet)
+- assertVisible: "Profesor Test Simple"
+- assertVisible: "Profesor Test Students"
+- assertVisible: "Profesor Test Ready"

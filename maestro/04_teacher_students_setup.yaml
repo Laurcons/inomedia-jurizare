@@ -1,0 +1,32 @@
+url: http://localhost:3000/auth/login
+---
+# teacher.students selects the student voting method and views their join code.
+# Depends on: 02_admin_start_voting (voting must be active)
+
+- launchApp
+- assertVisible: "Autentificare"
+- runFlow:
+    file: helpers/_login.yaml
+    env:
+      LOGIN_EMAIL: "teacher.students@test.ro"
+
+# Voting is active and no method chosen → redirected to /teacher/vote-method
+- assertVisible: "Alege metoda de jurizare"
+- assertVisible: "Această alegere nu poate fi modificată ulterior."
+
+# Select student voting
+- tapOn: "Jurizare cu Elevi"
+- tapOn: "Confirmă alegerea"
+
+# Redirected to /teacher/students — instructions tab shown by default
+- assertVisible: "Jurizare cu Elevi"
+- assertVisible: "Cod de acces pentru elevi"
+- assertVisible: "Link direct"
+
+# Votes tab — no votes yet
+- tapOn: "Voturi primite.*"
+- assertVisible: "Niciun vot primit încă."
+
+# Ranking tab — no ranking yet
+- tapOn: "Clasament curent"
+- assertVisible: "Niciun vot primit încă. Clasamentul va apărea după ce elevii votează."

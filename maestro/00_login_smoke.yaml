@@ -1,0 +1,32 @@
+url: http://localhost:3000/auth/login
+---
+# Teacher login flow
+# Prerequisites:
+#   - npm run seed:test   (seeds teacher.simple@test.ro with OTP 000000)
+#   - DEV_MODE=true in .env.local
+#   - npm run dev         (app running on localhost:3000)
+
+- launchApp
+
+# Step 1: login page loads
+- assertVisible: "Autentificare"
+- assertVisible: "Trimite codul"
+
+# Step 2: submit email
+- tapOn:
+    id: "email"
+- inputText: "teacher.simple@test.ro"
+- tapOn: "Trimite codul"
+
+# Step 3: verify page loads with correct email shown
+- assertVisible: "Verificare cod"
+- assertVisible: "teacher.simple@test.ro"
+
+# Step 4: enter OTP and submit
+- tapOn:
+    id: "otp"
+- inputText: "000000"
+- tapOn: "Autentifică-mă"
+
+# Step 5: redirected to teacher dashboard
+- assertVisible: "Perioada de jurizare nu a început"

@@ -1,0 +1,30 @@
+url: http://localhost:3000/auth/login
+---
+# teacher.ready views student votes then submits the school ranking.
+# Depends on: 05_student_vote (students must have voted)
+
+- launchApp
+- assertVisible: "Autentificare"
+- runFlow:
+    file: helpers/_login.yaml
+    env:
+      LOGIN_EMAIL: "teacher.ready@test.ro"
+
+# Redirected to /teacher/students (votingMethod=students already set)
+- assertVisible: "Jurizare cu Elevi"
+
+# Votes tab — should show the two votes from flow 05
+- tapOn: "Voturi primite.*"
+- assertVisible: "Popescu Ioan"
+- assertVisible: "Ionescu Maria"
+
+# Ranking tab — verify ranking computed from student votes
+- tapOn: "Clasament curent"
+- assertVisible: "Video Test 1"
+
+# Back to votes tab to submit
+- tapOn: "Voturi primite.*"
+- tapOn: "Trimite voturile elevilor"
+
+# Success
+- assertVisible: "Voturile au fost trimise!"
