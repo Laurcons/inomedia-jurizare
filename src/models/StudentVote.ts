@@ -20,5 +20,7 @@ const StudentVoteSchema = new Schema<IStudentVote>(
   { timestamps: { createdAt: true, updatedAt: false } },
 );
 
+StudentVoteSchema.index({ teacherId: 1, removed: 1 });
+
 export default (mongoose.models.StudentVote as mongoose.Model<IStudentVote>) ||
   mongoose.model<IStudentVote>('StudentVote', StudentVoteSchema);

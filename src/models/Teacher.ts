@@ -34,5 +34,7 @@ const TeacherSchema = new Schema<ITeacher>({
   otpSentAt: { type: Date, default: null },
 });
 
+TeacherSchema.index({ joinCode: 1 });
+
 export default (mongoose.models.Teacher as mongoose.Model<ITeacher>) ||
   mongoose.model<ITeacher>('Teacher', TeacherSchema);
