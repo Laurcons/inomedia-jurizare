@@ -69,16 +69,16 @@ const OTP_EXPIRY = new Date('2099-01-01T00:00:00Z');
 const TEST_OTP = '000000';
 
 const TEST_VIDEOS = [
-  { title: 'Video Test 1', school: 'Scoala Test 1', locality: 'Iași', county: 'Iași', thumbnailUrl: 'https://picsum.photos/seed/t1/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 2', school: 'Scoala Test 2', locality: 'Cluj-Napoca', county: 'Cluj', thumbnailUrl: 'https://picsum.photos/seed/t2/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 3', school: 'Scoala Test 3', locality: 'Timișoara', county: 'Timiș', thumbnailUrl: 'https://picsum.photos/seed/t3/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 4', school: 'Scoala Test 4', locality: 'Brașov', county: 'Brașov', thumbnailUrl: 'https://picsum.photos/seed/t4/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 5', school: 'Scoala Test 5', locality: 'Constanța', county: 'Constanța', thumbnailUrl: 'https://picsum.photos/seed/t5/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 6', school: 'Scoala Test 6', locality: 'Galați', county: 'Galați', thumbnailUrl: 'https://picsum.photos/seed/t6/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 7', school: 'Scoala Test 7', locality: 'Craiova', county: 'Dolj', thumbnailUrl: 'https://picsum.photos/seed/t7/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 8', school: 'Scoala Test 8', locality: 'Ploiești', county: 'Prahova', thumbnailUrl: 'https://picsum.photos/seed/t8/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 9', school: 'Scoala Test 9', locality: 'Oradea', county: 'Bihor', thumbnailUrl: 'https://picsum.photos/seed/t9/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Video Test 10', school: 'Scoala Test 10', locality: 'Bacău', county: 'Bacău', thumbnailUrl: 'https://picsum.photos/seed/t10/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+  { title: 'Video Test 1', school: 'Scoala Test 1', locality: 'Iași', county: 'Iași', thumbnailUrl: 'https://picsum.photos/seed/t1/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Antichitate' },
+  { title: 'Video Test 2', school: 'Scoala Test 2', locality: 'Cluj-Napoca', county: 'Cluj', thumbnailUrl: 'https://picsum.photos/seed/t2/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Evul Mediu' },
+  { title: 'Video Test 3', school: 'Scoala Test 3', locality: 'Timișoara', county: 'Timiș', thumbnailUrl: 'https://picsum.photos/seed/t3/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Evul Mediu' },
+  { title: 'Video Test 4', school: 'Scoala Test 4', locality: 'Brașov', county: 'Brașov', thumbnailUrl: 'https://picsum.photos/seed/t4/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Epoca Modernă' },
+  { title: 'Video Test 5', school: 'Scoala Test 5', locality: 'Constanța', county: 'Constanța', thumbnailUrl: 'https://picsum.photos/seed/t5/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Epoca Modernă' },
+  { title: 'Video Test 6', school: 'Scoala Test 6', locality: 'Galați', county: 'Galați', thumbnailUrl: 'https://picsum.photos/seed/t6/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Epoca Contemporană' },
+  { title: 'Video Test 7', school: 'Scoala Test 7', locality: 'Craiova', county: 'Dolj', thumbnailUrl: 'https://picsum.photos/seed/t7/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Epoca Contemporană' },
+  { title: 'Video Test 8', school: 'Scoala Test 8', locality: 'Ploiești', county: 'Prahova', thumbnailUrl: 'https://picsum.photos/seed/t8/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Antichitate' },
+  { title: 'Video Test 9', school: 'Scoala Test 9', locality: 'Oradea', county: 'Bihor', thumbnailUrl: 'https://picsum.photos/seed/t9/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Evul Mediu' },
+  { title: 'Video Test 10', school: 'Scoala Test 10', locality: 'Bacău', county: 'Bacău', thumbnailUrl: 'https://picsum.photos/seed/t10/320/180', youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', category: 'Epoca Modernă' },
 ];
 
 async function seed() {

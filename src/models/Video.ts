@@ -7,6 +7,7 @@ export interface IVideo extends Document {
   county: string;
   thumbnailUrl: string;
   youtubeUrl: string;
+  category: string;
 }
 
 const VideoSchema = new Schema<IVideo>({
@@ -16,6 +17,7 @@ const VideoSchema = new Schema<IVideo>({
   county: { type: String, required: true },
   thumbnailUrl: { type: String, required: true },
   youtubeUrl: { type: String, required: true },
+  category: { type: String, required: true },
 });
 
 export default (mongoose.models.Video as mongoose.Model<IVideo>) || mongoose.model<IVideo>('Video', VideoSchema);

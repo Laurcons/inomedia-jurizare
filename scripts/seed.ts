@@ -62,6 +62,7 @@ const SAMPLE_VIDEOS = [
     county: 'Iași',
     thumbnailUrl: 'https://picsum.photos/seed/v1/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Evul Mediu',
   },
   {
     title: 'Mihai Viteazul și Unirea de la 1600',
@@ -70,6 +71,7 @@ const SAMPLE_VIDEOS = [
     county: 'Prahova',
     thumbnailUrl: 'https://picsum.photos/seed/v2/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Evul Mediu',
   },
   {
     title: 'Revoluția de la 1848 în Principatele Române',
@@ -78,6 +80,7 @@ const SAMPLE_VIDEOS = [
     county: 'Dolj',
     thumbnailUrl: 'https://picsum.photos/seed/v3/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Modernă',
   },
   {
     title: 'Alexandru Ioan Cuza și reformele sale',
@@ -86,6 +89,7 @@ const SAMPLE_VIDEOS = [
     county: 'Vrancea',
     thumbnailUrl: 'https://picsum.photos/seed/v4/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Modernă',
   },
   {
     title: 'Marea Unire din 1918',
@@ -94,6 +98,7 @@ const SAMPLE_VIDEOS = [
     county: 'Cluj',
     thumbnailUrl: 'https://picsum.photos/seed/v5/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Contemporană',
   },
   {
     title: 'Dacii și Decebal – Rezistența față de Roma',
@@ -102,6 +107,7 @@ const SAMPLE_VIDEOS = [
     county: 'Sălaj',
     thumbnailUrl: 'https://picsum.photos/seed/v6/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Antichitate',
   },
   {
     title: 'Vlad Țepeș și mitul Dracula',
@@ -110,6 +116,7 @@ const SAMPLE_VIDEOS = [
     county: 'Olt',
     thumbnailUrl: 'https://picsum.photos/seed/v7/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Evul Mediu',
   },
   {
     title: 'Ecaterina Teodoroiu – Eroina de la Jiu',
@@ -118,6 +125,7 @@ const SAMPLE_VIDEOS = [
     county: 'Prahova',
     thumbnailUrl: 'https://picsum.photos/seed/v8/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Contemporană',
   },
   {
     title: 'Nicolae Bălcescu și idealul național',
@@ -126,6 +134,7 @@ const SAMPLE_VIDEOS = [
     county: 'Dolj',
     thumbnailUrl: 'https://picsum.photos/seed/v9/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Modernă',
   },
   {
     title: 'Avram Iancu – Crăișorul Munților',
@@ -134,6 +143,7 @@ const SAMPLE_VIDEOS = [
     county: 'Hunedoara',
     thumbnailUrl: 'https://picsum.photos/seed/v10/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Modernă',
   },
   {
     title: 'Domnia lui Basarab I și întemeierea Țării Românești',
@@ -142,6 +152,7 @@ const SAMPLE_VIDEOS = [
     county: 'Vâlcea',
     thumbnailUrl: 'https://picsum.photos/seed/v11/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Evul Mediu',
   },
   {
     title: 'Revoluția Română din 1989',
@@ -150,6 +161,7 @@ const SAMPLE_VIDEOS = [
     county: 'Bihor',
     thumbnailUrl: 'https://picsum.photos/seed/v12/320/180',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    category: 'Epoca Contemporană',
   },
 ];
 
