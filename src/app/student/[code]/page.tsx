@@ -3,7 +3,6 @@ import { connectDB } from '@/lib/mongodb';
 import Teacher from '@/models/Teacher';
 import Video from '@/models/Video';
 import VotingState from '@/models/VotingState';
-import { notFound } from 'next/navigation';
 import StudentVotingClient from './StudentVotingClient';
 
 interface PageProps {
@@ -24,7 +23,21 @@ export default async function StudentVotePage({ params }: PageProps) {
     Video.find().lean(),
   ]);
 
-  if (!teacher) return notFound();
+  if (!teacher) {
+    return (
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="card shadow-sm" style={{ maxWidth: 420 }}>
+          <div className="card-body p-4 text-center">
+            <h2 className="h5 mb-3">Cod necunoscut</h2>
+            <p className="text-muted">Codul introdus nu există. Verifică codul și încearcă din nou.</p>
+            <a href="/student" className="btn btn-primary mt-2">
+              Înapoi
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // If code is in previousCodes (invalidated), show error
   const isInvalidated = teacher.previousCodes.includes(upperCode) && teacher.joinCode !== upperCode;
