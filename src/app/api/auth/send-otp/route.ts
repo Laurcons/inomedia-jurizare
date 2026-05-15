@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
     user.otp = otp;
     user.otpExpiry = otpExpiry;
     user.otpSentAt = new Date();
+    user.otpAttempts = 0;
     await user.save();
 
     if (process.env.DEV_MODE !== 'true') {

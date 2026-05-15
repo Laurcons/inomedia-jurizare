@@ -14,16 +14,28 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const normalizedEmail = email.trim().toLowerCase();
-    let user = await Teacher.findOne({ email: normalizedEmail });
+    let user = await Teacher.findOneAndUpdate(
+      { email: normalizedEmail },
+      { $inc: { otpAttempts: 1 } },
+      { new: true }
+    );
     let role: 'teacher' | 'admin' = 'teacher';
 
     if (!user) {
-      user = await Admin.findOne({ email: normalizedEmail });
+      user = await Admin.findOneAndUpdate(
+        { email: normalizedEmail },
+        { $inc: { otpAttempts: 1 } },
+        { new: true }
+      );
       role = 'admin';
     }
 
     if (!user) {
       return NextResponse.json({ error: 'Utilizator negăsit.' }, { status: 404 });
+    }
+
+    if (process.env.DEV_MODE !== 'true' && user.otpAttempts > 5) {
+      return NextResponse.json({ error: 'Prea multe încercări. Solicită un cod nou.' }, { status: 429 });
     }
 
     if (!user.otp || !user.otpExpiry) {
@@ -39,12 +51,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Cod incorect.' }, { status: 400 });
     }
 
-    // Clear OTP
     user.otp = null;
     user.otpExpiry = null;
+    user.otpAttempts = 0;
     await user.save();
 
-    // Create session
     const session = await getSession();
     session.userId = user._id.toString();
     session.role = role;

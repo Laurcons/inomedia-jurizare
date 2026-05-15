@@ -6,6 +6,7 @@ export interface IAdmin extends Document {
   otp: string | null;
   otpExpiry: Date | null;
   otpSentAt: Date | null;
+  otpAttempts: number;
 }
 
 const AdminSchema = new Schema<IAdmin>({
@@ -14,6 +15,7 @@ const AdminSchema = new Schema<IAdmin>({
   otp: { type: String, default: null },
   otpExpiry: { type: Date, default: null },
   otpSentAt: { type: Date, default: null },
+  otpAttempts: { type: Number, default: 0 },
 });
 
 export default (mongoose.models.Admin as mongoose.Model<IAdmin>) || mongoose.model<IAdmin>('Admin', AdminSchema);

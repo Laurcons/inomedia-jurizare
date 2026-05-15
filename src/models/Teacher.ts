@@ -15,6 +15,7 @@ export interface ITeacher extends Document {
   otp: string | null;
   otpExpiry: Date | null;
   otpSentAt: Date | null;
+  otpAttempts: number;
 }
 
 const TeacherSchema = new Schema<ITeacher>({
@@ -32,6 +33,7 @@ const TeacherSchema = new Schema<ITeacher>({
   otp: { type: String, default: null },
   otpExpiry: { type: Date, default: null },
   otpSentAt: { type: Date, default: null },
+  otpAttempts: { type: Number, default: 0 },
 });
 
 TeacherSchema.index({ joinCode: 1 }, { unique: true, sparse: true });
