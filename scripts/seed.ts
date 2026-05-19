@@ -14,7 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI!;
 const TeacherSchema = new mongoose.Schema({
   email: String,
   fullName: String,
-  school: String,
+  schools: [String],
   locality: String,
   county: String,
   studentCount: String,
@@ -38,7 +38,7 @@ const AdminSchema = new mongoose.Schema({
 
 const VideoSchema = new mongoose.Schema({
   title: String,
-  school: String,
+  schools: [String],
   locality: String,
   county: String,
   thumbnailUrl: String,
@@ -57,7 +57,7 @@ const VotingState = mongoose.model('VotingState', VotingStateSchema);
 const SAMPLE_VIDEOS = [
   {
     title: 'Ştefan cel Mare – Apărătorul Moldovei',
-    school: 'Colegiul Național „Mihai Eminescu"',
+    schools: ['Colegiul Național „Mihai Eminescu"'],
     locality: 'Iași',
     county: 'Iași',
     thumbnailUrl: 'https://picsum.photos/seed/v1/320/180',
@@ -66,7 +66,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Mihai Viteazul și Unirea de la 1600',
-    school: 'Liceul Teoretic „Nichita Stănescu"',
+    schools: ['Liceul Teoretic „Nichita Stănescu"'],
     locality: 'Ploiești',
     county: 'Prahova',
     thumbnailUrl: 'https://picsum.photos/seed/v2/320/180',
@@ -75,7 +75,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Revoluția de la 1848 în Principatele Române',
-    school: 'Colegiul Național „Tudor Vladimirescu"',
+    schools: ['Colegiul Național „Tudor Vladimirescu"'],
     locality: 'Craiova',
     county: 'Dolj',
     thumbnailUrl: 'https://picsum.photos/seed/v3/320/180',
@@ -84,7 +84,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Alexandru Ioan Cuza și reformele sale',
-    school: 'Liceul Pedagogic „Spiru Haret"',
+    schools: ['Liceul Pedagogic „Spiru Haret"'],
     locality: 'Focșani',
     county: 'Vrancea',
     thumbnailUrl: 'https://picsum.photos/seed/v4/320/180',
@@ -93,7 +93,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Marea Unire din 1918',
-    school: 'Colegiul Național „George Barițiu"',
+    schools: ['Colegiul Național „George Barițiu"'],
     locality: 'Cluj-Napoca',
     county: 'Cluj',
     thumbnailUrl: 'https://picsum.photos/seed/v5/320/180',
@@ -102,7 +102,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Dacii și Decebal – Rezistența față de Roma',
-    school: 'Liceul Teoretic „Simion Bărnuțiu"',
+    schools: ['Liceul Teoretic „Simion Bărnuțiu"'],
     locality: 'Zalău',
     county: 'Sălaj',
     thumbnailUrl: 'https://picsum.photos/seed/v6/320/180',
@@ -111,7 +111,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Vlad Țepeș și mitul Dracula',
-    school: 'Colegiul Național „Radu Greceanu"',
+    schools: ['Colegiul Național „Radu Greceanu"'],
     locality: 'Slatina',
     county: 'Olt',
     thumbnailUrl: 'https://picsum.photos/seed/v7/320/180',
@@ -120,7 +120,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Ecaterina Teodoroiu – Eroina de la Jiu',
-    school: 'Liceul Militar „Dimitrie Cantemir"',
+    schools: ['Liceul Militar „Dimitrie Cantemir"'],
     locality: 'Breaza',
     county: 'Prahova',
     thumbnailUrl: 'https://picsum.photos/seed/v8/320/180',
@@ -129,7 +129,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Nicolae Bălcescu și idealul național',
-    school: 'Colegiul Național „Frații Buzești"',
+    schools: ['Colegiul Național „Frații Buzești"'],
     locality: 'Craiova',
     county: 'Dolj',
     thumbnailUrl: 'https://picsum.photos/seed/v9/320/180',
@@ -138,7 +138,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Avram Iancu – Crăișorul Munților',
-    school: 'Liceul Teoretic „Avram Iancu"',
+    schools: ['Liceul Teoretic „Avram Iancu"'],
     locality: 'Brad',
     county: 'Hunedoara',
     thumbnailUrl: 'https://picsum.photos/seed/v10/320/180',
@@ -147,7 +147,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Domnia lui Basarab I și întemeierea Țării Românești',
-    school: 'Colegiul Național „Mircea cel Bătrân"',
+    schools: ['Colegiul Național „Mircea cel Bătrân"'],
     locality: 'Râmnicu Vâlcea',
     county: 'Vâlcea',
     thumbnailUrl: 'https://picsum.photos/seed/v11/320/180',
@@ -156,7 +156,7 @@ const SAMPLE_VIDEOS = [
   },
   {
     title: 'Revoluția Română din 1989',
-    school: 'Liceul Teoretic „Onisifor Ghibu"',
+    schools: ['Liceul Teoretic „Onisifor Ghibu"'],
     locality: 'Oradea',
     county: 'Bihor',
     thumbnailUrl: 'https://picsum.photos/seed/v12/320/180',
@@ -186,7 +186,7 @@ async function seed() {
     {
       email: 'prof.ionescu@scoala-iasi.ro',
       fullName: 'Maria Ionescu',
-      school: 'Colegiul Național „Mihai Eminescu"',
+      schools: ['Colegiul Național „Mihai Eminescu"'],
       locality: 'Iași',
       county: 'Iași',
       studentCount: '4+',
@@ -194,7 +194,7 @@ async function seed() {
     {
       email: 'prof.popescu@scoala-cluj.ro',
       fullName: 'Ion Popescu',
-      school: 'Colegiul Național „George Barițiu"',
+      schools: ['Colegiul Național „George Barițiu"'],
       locality: 'Cluj-Napoca',
       county: 'Cluj',
       studentCount: '2',
@@ -202,7 +202,7 @@ async function seed() {
     {
       email: 'prof.gheorghe@scoala-buc.ro',
       fullName: 'Elena Gheorghe',
-      school: 'Liceul Teoretic „Nichita Stănescu"',
+      schools: ['Liceul Teoretic „Nichita Stănescu"'],
       locality: 'București',
       county: 'Ilfov',
       studentCount: '3',

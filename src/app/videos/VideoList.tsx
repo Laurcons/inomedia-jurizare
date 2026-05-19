@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 interface Video {
   id: string;
   title: string;
-  school: string;
+  schools: string[];
   locality: string;
   thumbnailUrl: string;
   youtubeUrl: string;
@@ -76,7 +76,10 @@ export default function VideoList({ videos, categories }: Props) {
             />
             <div className="flex-grow-1">
               <div className="fw-medium">{video.title}</div>
-              <div className="text-muted small">{video.school}, {video.locality}</div>
+              <div className="text-muted small">
+                {video.schools.map((s, i) => <div key={i}>{s}</div>)}
+                <div>{video.locality}</div>
+              </div>
             </div>
             <a
               href={video.youtubeUrl}

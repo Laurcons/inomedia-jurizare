@@ -15,7 +15,7 @@ export default async function VideosPage() {
   const videos = videosDocs.map((v) => ({
     id: v._id.toString(),
     title: v.title,
-    school: v.school,
+    schools: v.schools,
     locality: v.locality,
     thumbnailUrl: v.thumbnailUrl,
     youtubeUrl: v.youtubeUrl,
