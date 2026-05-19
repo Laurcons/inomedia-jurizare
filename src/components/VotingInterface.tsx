@@ -109,7 +109,7 @@ function SortableCard({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={video.thumbnailUrl}
-              alt=""
+              alt={video.title}
               width={60}
               height={34}
               style={{ objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}
@@ -157,6 +157,7 @@ export default function VotingInterface({
   const [allVideos, setAllVideos] = useState<VideoItem[]>([...initialRanked, ...initialUnranked]);
   const [, setIsDraggingAny] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const [casting, setCasting] = useState(false);
   const [castError, setCastError] = useState('');
   const [castDone, setCastDone] = useState(false);
@@ -175,12 +176,16 @@ export default function VotingInterface({
       if (saveTimer.current) clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(async () => {
         setSaving(true);
+        setSaveError(false);
         try {
-          await fetch(saveUrl, {
+          const res = await fetch(saveUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ranking: videos.slice(0, 10).map((v) => v.id) }),
           });
+          if (!res.ok) setSaveError(true);
+        } catch {
+          setSaveError(true);
         } finally {
           setSaving(false);
         }
@@ -222,6 +227,7 @@ export default function VotingInterface({
   }
 
   async function handleCast() {
+    if (!confirm('Ești sigur că vrei să trimiți votul? Această acțiune nu poate fi anulată.')) return;
     setCasting(true);
     setCastError('');
     try {
@@ -304,6 +310,11 @@ export default function VotingInterface({
       </div>
 
       {castError && <div className="alert alert-danger">{castError}</div>}
+      {saveError && (
+        <div className="alert alert-danger py-2">
+          Salvarea a eșuat — verificați conexiunea. Modificați clasamentul pentru a reîncerca.
+        </div>
+      )}
 
       {/* Section label with inline save indicator — reserved space prevents layout shift */}
       <div className="d-flex align-items-center gap-2 mb-2">
@@ -332,7 +343,7 @@ export default function VotingInterface({
 
       {allVideos.length >= 10 && (
         <div className="mt-4">
-          <button className="btn btn-success btn-lg" onClick={handleCast} disabled={casting}>
+          <button className="btn btn-success btn-lg" onClick={handleCast} disabled={casting || saveError}>
             {casting ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" />

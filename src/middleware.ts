@@ -12,7 +12,7 @@ const sessionOptions = {
   },
 };
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith('/teacher')) {

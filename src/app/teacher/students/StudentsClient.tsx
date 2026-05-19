@@ -1,5 +1,6 @@
 'use client';
 
+import { apiFetch } from '@/lib/apiFetch';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -47,6 +48,8 @@ export default function StudentsClient({
   const [refreshingRanking, setRefreshingRanking] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [votesError, setVotesError] = useState('');
+  const [rankingError, setRankingError] = useState('');
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
 
@@ -54,11 +57,14 @@ export default function StudentsClient({
 
   const refreshVotes = useCallback(async () => {
     setRefreshingVotes(true);
+    setVotesError('');
     try {
-      const res = await fetch('/api/teacher/students/votes');
+      const res = await apiFetch('/api/teacher/students/votes');
       if (res.ok) {
         const data = await res.json();
         setVotes(data.votes);
+      } else {
+        setVotesError('Nu s-au putut încărca voturile. Încearcă din nou.');
       }
     } finally {
       setRefreshingVotes(false);
@@ -67,11 +73,14 @@ export default function StudentsClient({
 
   const refreshRanking = useCallback(async () => {
     setRefreshingRanking(true);
+    setRankingError('');
     try {
-      const res = await fetch('/api/teacher/ranking');
+      const res = await apiFetch('/api/teacher/ranking');
       if (res.ok) {
         const data = await res.json();
         setRankingVideos(data.ranking);
+      } else {
+        setRankingError('Nu s-a putut încărca clasamentul. Încearcă din nou.');
       }
     } finally {
       setRefreshingRanking(false);
@@ -79,16 +88,19 @@ export default function StudentsClient({
   }, []);
 
   async function toggleRemove(voteId: string) {
-    const res = await fetch(`/api/teacher/students/votes/${voteId}`, { method: 'PATCH' });
-    if (res.ok) {
+    setVotesError('');
+    setVotes((prev) => prev.map((v) => (v.id === voteId ? { ...v, removed: !v.removed } : v)));
+    const res = await apiFetch(`/api/teacher/students/votes/${voteId}`, { method: 'PATCH' });
+    if (!res.ok) {
       setVotes((prev) => prev.map((v) => (v.id === voteId ? { ...v, removed: !v.removed } : v)));
+      setVotesError('Nu s-a putut actualiza votul. Încearcă din nou.');
     }
   }
 
   async function handleRegenerate() {
     setRegenerating(true);
     try {
-      const res = await fetch('/api/teacher/code/regenerate', { method: 'POST' });
+      const res = await apiFetch('/api/teacher/code/regenerate', { method: 'POST' });
       if (res.ok) {
         const data = await res.json();
         setJoinCode(data.code);
@@ -103,7 +115,7 @@ export default function StudentsClient({
     setSubmitting(true);
     setSubmitError('');
     try {
-      const res = await fetch('/api/teacher/students/submit', { method: 'POST' });
+      const res = await apiFetch('/api/teacher/students/submit', { method: 'POST' });
       const data = await res.json();
       if (!res.ok) {
         setSubmitError(data.error);
@@ -230,8 +242,11 @@ export default function StudentsClient({
             </button>
           </div>
 
+          {votesError && <div className="alert alert-danger py-2">{votesError}</div>}
           {votes.length === 0 ? (
-            <div className="alert alert-info">Niciun vot primit încă.</div>
+            <div className="alert alert-info">
+              Niciun vot primit încă. Distribuie codul de acces sau codul QR elevilor pentru a începe votarea.
+            </div>
           ) : (
             <div className="table-responsive">
               <table className="table table-hover align-middle">
@@ -306,6 +321,7 @@ export default function StudentsClient({
             </button>
           </div>
 
+          {rankingError && <div className="alert alert-danger py-2">{rankingError}</div>}
           {rankingVideos.length === 0 ? (
             <div className="alert alert-info">
               Niciun vot primit încă. Clasamentul va apărea după ce elevii votează.

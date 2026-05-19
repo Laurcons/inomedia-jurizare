@@ -1,6 +1,6 @@
 import { connectDB } from '@/lib/mongodb';
 import { getSession } from '@/lib/session';
-import { generateUniqueStudentCode } from '@/lib/student-code';
+import { generateStudentCode } from '@/lib/student-code';
 import Teacher from '@/models/Teacher';
 import VotingState from '@/models/VotingState';
 import { NextResponse } from 'next/server';
@@ -25,18 +25,22 @@ export async function POST() {
       return NextResponse.json({ error: 'Metoda de votare incorectă.' }, { status: 400 });
     }
 
-    const allTeachers = await Teacher.find({}, 'joinCode').lean();
-    const activeCodes = new Set(
-      allTeachers
-        .filter((t) => t._id.toString() !== session.userId)
-        .map((t) => t.joinCode)
-        .filter(Boolean),
-    );
-
-    const newCode = generateUniqueStudentCode(activeCodes);
-    teacher.previousCodes.push(teacher.joinCode);
-    teacher.joinCode = newCode;
-    await teacher.save();
+    let saved = false;
+    let newCode = '';
+    for (let attempt = 0; attempt < 10; attempt++) {
+      newCode = generateStudentCode();
+      try {
+        if (teacher.joinCode) teacher.previousCodes.push(teacher.joinCode);
+        teacher.joinCode = newCode;
+        await teacher.save();
+        saved = true;
+        break;
+      } catch (err: unknown) {
+        if ((err as { code?: number }).code === 11000) continue;
+        throw err;
+      }
+    }
+    if (!saved) return NextResponse.json({ error: 'Eroare internă.' }, { status: 500 });
 
     return NextResponse.json({ success: true, code: newCode });
   } catch {

@@ -1,5 +1,6 @@
 'use client';
 
+import { apiFetch } from '@/lib/apiFetch';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -14,7 +15,7 @@ export default function VoteMethodForm() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/teacher/vote-method', {
+      const res = await apiFetch('/api/teacher/vote-method', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ method: selected }),

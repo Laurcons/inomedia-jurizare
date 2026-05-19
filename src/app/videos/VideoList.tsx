@@ -69,7 +69,7 @@ export default function VideoList({ videos, categories }: Props) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={video.thumbnailUrl}
-              alt=""
+              alt={video.title}
               width={80}
               height={45}
               style={{ objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}

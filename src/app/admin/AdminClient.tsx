@@ -1,5 +1,6 @@
 'use client';
 
+import { apiFetch } from '@/lib/apiFetch';
 import type { VotingStatus } from '@/models/VotingState';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -36,7 +37,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
     setLoading('start');
     setError('');
     try {
-      const res = await fetch('/api/admin/voting/start', { method: 'POST' });
+      const res = await apiFetch('/api/admin/voting/start', { method: 'POST' });
       const data = await res.json();
       if (!res.ok) setError(data.error);
       else router.refresh();
@@ -50,7 +51,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
     setLoading('stop');
     setError('');
     try {
-      const res = await fetch('/api/admin/voting/stop', { method: 'POST' });
+      const res = await apiFetch('/api/admin/voting/stop', { method: 'POST' });
       const data = await res.json();
       if (!res.ok) setError(data.error);
       else router.refresh();

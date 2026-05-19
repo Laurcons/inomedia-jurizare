@@ -1,10 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FormEvent, Suspense, useState } from 'react';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const expired = searchParams.get('expired') === '1';
+
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -42,6 +45,11 @@ export default function LoginPage() {
             Introdu adresa de email pentru a primi codul de verificare.
           </p>
 
+          {expired && (
+            <div className="alert alert-warning py-2">
+              Sesiunea a expirat. Autentifică-te din nou.
+            </div>
+          )}
           {error && <div className="alert alert-danger py-2">{error}</div>}
 
           <form onSubmit={handleSubmit}>
@@ -86,5 +94,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

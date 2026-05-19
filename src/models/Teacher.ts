@@ -8,7 +8,7 @@ export interface ITeacher extends Document {
   county: string;
   studentCount: '1' | '2' | '3' | '4+';
   votingMethod: 'simple' | 'students' | null;
-  joinCode: string;
+  joinCode: string | null;
   previousCodes: string[];
   voteSubmitted: boolean;
   submittedRanking: Types.ObjectId[];
@@ -25,7 +25,7 @@ const TeacherSchema = new Schema<ITeacher>({
   county: { type: String, required: true },
   studentCount: { type: String, enum: ['1', '2', '3', '4+'], required: true },
   votingMethod: { type: String, enum: ['simple', 'students'], default: null },
-  joinCode: { type: String, default: '' },
+  joinCode: { type: String, default: null },
   previousCodes: { type: [String], default: [] },
   voteSubmitted: { type: Boolean, default: false },
   submittedRanking: { type: [Schema.Types.ObjectId], ref: 'Video', default: [] },
@@ -34,7 +34,7 @@ const TeacherSchema = new Schema<ITeacher>({
   otpSentAt: { type: Date, default: null },
 });
 
-TeacherSchema.index({ joinCode: 1 });
+TeacherSchema.index({ joinCode: 1 }, { unique: true, sparse: true });
 
 export default (mongoose.models.Teacher as mongoose.Model<ITeacher>) ||
   mongoose.model<ITeacher>('Teacher', TeacherSchema);
