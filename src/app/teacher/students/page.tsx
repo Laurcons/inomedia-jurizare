@@ -45,7 +45,7 @@ export default async function TeacherStudentsPage() {
     <StudentsClient
       teacher={{
         id: teacher._id.toString(),
-        joinCode: teacher.joinCode,
+        joinCode: teacher.joinCode!,
         voteSubmitted: teacher.voteSubmitted,
       }}
       votes={studentVotes.map((v) => ({
