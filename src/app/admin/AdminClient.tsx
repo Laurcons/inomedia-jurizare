@@ -26,11 +26,12 @@ interface Props {
   status: VotingStatus;
   teachers: TeacherRow[];
   nationalRanking: RankingEntry[];
+  canImpersonate: boolean;
 }
 
-export default function AdminClient({ status, teachers, nationalRanking }: Props) {
+export default function AdminClient({ status, teachers, nationalRanking, canImpersonate }: Props) {
   const router = useRouter();
-  const [loading, setLoading] = useState<'start' | 'stop' | null>(null);
+  const [loading, setLoading] = useState<'start' | 'stop' | `impersonate-${string}` | null>(null);
   const [error, setError] = useState('');
 
   async function handleStart() {
@@ -55,6 +56,22 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
       const data = await res.json();
       if (!res.ok) setError(data.error);
       else router.refresh();
+    } finally {
+      setLoading(null);
+    }
+  }
+
+  async function handleImpersonate(teacherId: string) {
+    setLoading(`impersonate-${teacherId}`);
+    setError('');
+    try {
+      const res = await apiFetch('/api/admin/impersonate', {
+        method: 'POST',
+        body: JSON.stringify({ teacherId }),
+      });
+      const data = await res.json();
+      if (!res.ok) setError(data.error);
+      else router.push('/teacher');
     } finally {
       setLoading(null);
     }
@@ -156,6 +173,7 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
                     <th>Localitate / Județ</th>
                     <th>Metodă</th>
                     <th>Votat</th>
+                    {canImpersonate && <th></th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -179,6 +197,21 @@ export default function AdminClient({ status, teachers, nationalRanking }: Props
                           <span className="badge bg-light text-muted">Nu</span>
                         )}
                       </td>
+                      {canImpersonate && (
+                        <td>
+                          <button
+                            className="btn btn-outline-secondary btn-sm"
+                            onClick={() => handleImpersonate(t.id)}
+                            disabled={loading === `impersonate-${t.id}`}
+                          >
+                            {loading === `impersonate-${t.id}` ? (
+                              <span className="spinner-border spinner-border-sm" />
+                            ) : (
+                              'Impersonifică'
+                            )}
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

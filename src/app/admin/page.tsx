@@ -1,6 +1,7 @@
 import { computeNationalRanking } from '@/lib/borda';
 import { connectDB } from '@/lib/mongodb';
 import { getSession } from '@/lib/session';
+import Admin from '@/models/Admin';
 import StudentVote from '@/models/StudentVote';
 import Teacher from '@/models/Teacher';
 import Video from '@/models/Video';
@@ -14,10 +15,11 @@ export default async function AdminPage() {
 
   await connectDB();
 
-  const [votingState, teachers, allVideos] = await Promise.all([
+  const [votingState, teachers, allVideos, admin] = await Promise.all([
     VotingState.findOne().lean(),
     Teacher.find().lean(),
     Video.find().lean(),
+    Admin.findById(session.userId).lean(),
   ]);
 
   const status = votingState?.status ?? 'not_started';
@@ -56,6 +58,7 @@ export default async function AdminPage() {
   return (
     <AdminClient
       status={status}
+      canImpersonate={admin?.canImpersonate ?? false}
       teachers={teachers.map((t) => ({
         id: t._id.toString(),
         fullName: t.fullName,
